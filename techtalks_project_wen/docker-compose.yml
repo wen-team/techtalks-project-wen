@@ -12,16 +12,40 @@ services:
     depends_on:
       - db
   db:
-    image: postgres:17
+    image: postgis/postgis:${POSTGRES_MAJOR_VERSION}-master
+    restart: unless-stopped
     ports:
       - 5432:5432
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - postgres_data:/var/lib/postgresql/
     environment:
       - POSTGRES_USER=${SQL_USER}
       - POSTGRES_PASSWORD=${SQL_PASSWORD}
       - POSTGRES_DB=${SQL_DATABASE}
+  
+  pgadmin4:
+    image: dpage/pgadmin4 # shouldn't need to pin version here
+    restart: always
+    ports:
+      - "5000:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+  
+  redis:
+        image: redis:8-${DEBIAN_VERSION}
+        container_name: my-redis
+        ports:
+            - '6379:6379'
+        volumes:
+            - redis_data:/data
+        environment:
+            - REDIS_ARGS=--requirepass ${REDIS_PASSWORD} --appendonly yes
+        restart: unless-stopped
     
 volumes:
     postgres_data:
-      driver: local
+    pgadmin_data:
+    redis_data:
