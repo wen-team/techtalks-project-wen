@@ -1,0 +1,1 @@
+./techtalks_project_wen/manage.py
