@@ -1,0 +1,129 @@
+{% load i18n wen %}{% comment %}
+Address details used by create (step 3) and edit.
+  form   AddressDetailsForm / AddressEditForm
+  card   existing AddressCard when editing (optional)
+{% endcomment %}
+<div class="details">
+  <section class="details__group" aria-labelledby="g-name">
+    <h3 class="details__heading" id="g-name">{% translate "Name this address" %}</h3>
+    {% include "wen/components/field.html" with field=form.title hint=_("The driver sees this name on the card. For example “Home, Mar Elias” or “Pharmacy, Jdeideh”.") hide_optional=True %}
+  </section>
+
+  <section class="details__group" aria-labelledby="g-building">
+    <h3 class="details__heading" id="g-building">{% translate "The building" %}</h3>
+
+    <div class="field" x-data="colorPicker('{{ form.building_color.value|default:''|escapejs }}', [{% for key, label, hex in wen_building_colors %}'{{ key }}'{% if not forloop.last %}, {% endif %}{% endfor %}])"
+         @wen-hints.window="hint($event.detail)">
+      <span class="field__label" id="color-label">{% translate "Building colour" %}<span class="optional">{% translate "Optional" %}</span>
+        <span class="badge badge--sea" x-show="fromHint" x-cloak>{% translate "From your description" %}</span></span>
+      <input type="hidden" name="building_color" :value="value">
+      <div class="swatches" role="radiogroup" aria-labelledby="color-label">
+        {% for key, label, hex in wen_building_colors %}
+          <button type="button" class="swatch" role="radio" :aria-checked="(!custom && value === '{{ key }}').toString()" :class="{ 'is-selected': !custom && value === '{{ key }}' }" @click="pick('{{ key }}')">
+            <span class="swatch__chip" style="background: {{ hex }}"></span>{{ label }}
+          </button>
+        {% endfor %}
+        <button type="button" class="swatch" role="radio" :aria-checked="custom.toString()" :class="{ 'is-selected': custom }" @click="other()">
+          <span class="swatch__chip swatch__chip--other"></span>{% translate "Other" %}
+        </button>
+      </div>
+      <input class="input" type="text" x-show="custom" x-cloak x-ref="custom" x-model="value" maxlength="40" dir="auto"
+             placeholder="{% translate 'e.g. stone, two-tone, blue balconies' %}" aria-label="{% translate 'Describe the colour' %}">
+      {% for error in form.building_color.errors %}<p class="field__error">{% icon "triangle-alert" 15 %}<span>{{ error }}</span></p>{% endfor %}
+    </div>
+
+    {% include "wen/components/field.html" with field=form.building_description hint=_("What a stranger would notice: shop on the ground floor, balconies, gate, a sign.") %}
+
+    <div class="field" x-data="floorPicker('{{ form.floor.value|default:''|escapejs }}')" @wen-hints.window="hint($event.detail)">
+      <label class="field__label" for="{{ form.floor.id_for_label }}">{% translate "Floor" %}<span class="optional">{% translate "Optional" %}</span>
+        <span class="badge badge--sea" x-show="fromHint" x-cloak>{% translate "From your description" %}</span></label>
+      <div class="floor-row">
+        <input class="input floor-row__input" type="text" name="floor" id="{{ form.floor.id_for_label }}" x-model="value" maxlength="20" inputmode="text" dir="auto"
+               placeholder="{% translate 'e.g. 3, or Ground' %}" {% if form.floor.errors %}aria-invalid="true"{% endif %}>
+        <div class="floor-row__chips" role="group" aria-label="{% translate 'Quick floor' %}">
+          <button type="button" class="chip" :class="{ 'is-selected': value === '0' }" @click="value = '0'">{% translate "Ground" %}</button>
+          {% for n in "123456" %}<button type="button" class="chip num" :class="{ 'is-selected': value === '{{ n }}' }" @click="value = '{{ n }}'">{{ n }}</button>{% endfor %}
+        </div>
+      </div>
+      <p class="field__hint">{% translate "Use 0 or “Ground” for the ground floor." %}</p>
+    </div>
+  </section>
+
+  <section class="details__group" aria-labelledby="g-entrance">
+    <h3 class="details__heading" id="g-entrance">{% translate "The entrance" %}</h3>
+    {% include "wen/components/field.html" with field=form.entrance_description hint=_("Which door, gate or bell. For example “Glass door left of the pharmacy, press 3B”.") %}
+
+    <div class="field" x-data="photoPicker({ max: 4, existing: {{ card.photos|length|default:0 }} })">
+      <span class="field__label">{% translate "Entrance photos" %}<span class="optional">{% translate "Optional, up to 4" %}</span></span>
+      <input type="file" name="photos" multiple x-ref="payload" class="visually-hidden" tabindex="-1" aria-hidden="true">
+      {% if card.photos %}
+        <div class="photo-grid">
+          {% for photo in card.photos %}
+            <label class="photo" :class="{ 'is-removed': removed.includes('{{ photo.id }}') }">
+              <img src="{% url 'web:owner_media' card.id photo.id %}" alt="{% blocktranslate with n=forloop.counter %}Entrance photo {{ n }}{% endblocktranslate %}" loading="lazy">
+              <input type="checkbox" name="remove_photos" value="{{ photo.id }}" class="visually-hidden" @change="toggleExisting('{{ photo.id }}', $event.target.checked)">
+              <span class="photo__remove" aria-hidden="true" x-show="!removed.includes('{{ photo.id }}')">{% icon "trash-2" 16 %}</span>
+              <span class="photo__tag badge" x-show="removed.includes('{{ photo.id }}')" x-cloak>{% translate "Will be removed" %}</span>
+              <span class="visually-hidden">{% translate "Remove this photo" %}</span>
+            </label>
+          {% endfor %}
+        </div>
+      {% endif %}
+      <div class="photo-grid" x-show="items.length" x-cloak>
+        <template x-for="(item, i) in items" :key="item.url">
+          <div class="photo">
+            <img :src="item.url" :alt="`{% translate 'New entrance photo' %} ${i + 1}`">
+            <button type="button" class="photo__remove" @click="remove(i)" aria-label="{% translate 'Remove photo' %}">{% icon "x" 16 %}</button>
+          </div>
+        </template>
+      </div>
+      <label class="dropzone" x-show="remaining > 0" :class="{ 'is-over': over }"
+             @dragover.prevent="over = true" @dragleave="over = false" @drop.prevent="over = false; add($event.dataTransfer.files)">
+        {% icon "camera" %}
+        <strong>{% translate "Add entrance photos" %}</strong>
+        <span>{% translate "Take a photo from the street, facing the door. Photos are resized before upload." %}</span>
+        <input type="file" accept="image/jpeg,image/png,image/webp" multiple @change="add($event.target.files); $event.target.value = ''">
+      </label>
+      <p class="field__hint" x-show="busy" x-cloak>{% translate "Preparing photos…" %}</p>
+      {% for error in form.photos.errors %}<p class="field__error">{% icon "triangle-alert" 15 %}<span>{{ error }}</span></p>{% endfor %}
+    </div>
+  </section>
+
+  <section class="details__group" aria-labelledby="g-final">
+    <h3 class="details__heading" id="g-final">{% translate "The last 150 metres" %}</h3>
+    {% include "wen/components/field.html" with field=form.directions hint=_("Step-by-step from the landmark to your door. If you leave this empty, the card shows your original description.") %}
+
+    <div class="field" x-data="voiceRecorder({ maxSeconds: 120 })">
+      <span class="field__label">{% translate "Voice note" %}<span class="optional">{% translate "Optional, up to 2 minutes" %}</span></span>
+      <input type="file" name="voice_note" x-ref="payload" class="visually-hidden" tabindex="-1" aria-hidden="true">
+      {% if card.voice_note %}
+        <div class="stack stack-sm" x-show="state === 'idle'">
+          {% url 'web:owner_media' card.id card.voice_note.id as existing_voice %}
+          {% include "wen/components/voice_player.html" with src=existing_voice title=_("Current voice note") %}
+          <label class="check"><input type="checkbox" name="remove_voice_note" value="on" {% if form.remove_voice_note.value %}checked{% endif %}>{% translate "Remove the current voice note" %}</label>
+        </div>
+      {% endif %}
+      <div class="recorder">
+        <div class="recorder__row" x-show="state === 'idle'">
+          <button type="button" class="btn" @click="start()">{% icon "mic" %}{% if card.voice_note %}{% translate "Record a new one" %}{% else %}{% translate "Record voice note" %}{% endif %}</button>
+          <label class="btn btn--ghost">{% icon "upload" %}{% translate "Upload audio" %}<input type="file" accept="audio/*" class="visually-hidden" @change="useFile($event.target.files[0]); $event.target.value = ''"></label>
+        </div>
+        <div class="recorder__row" x-show="state === 'recording'" x-cloak>
+          <span class="recorder__dot" aria-hidden="true"></span>
+          <span class="num" x-text="clock" aria-live="off"></span>
+          <span class="recorder__bars" aria-hidden="true"><template x-for="(h, i) in levels" :key="i"><span :style="`height: ${h}px`"></span></template></span>
+          <button type="button" class="btn btn--danger btn--sm" @click="stop()">{% icon "square" 16 %}{% translate "Stop" %}</button>
+        </div>
+        <div class="stack stack-sm" x-show="state === 'ready'" x-cloak>
+          <audio class="recorder__audio" controls :src="url" preload="metadata"></audio>
+          <div class="cluster cluster--tight">
+            <button type="button" class="btn btn--sm" @click="start()">{% icon "rotate-ccw" 16 %}{% translate "Record again" %}</button>
+            <button type="button" class="btn btn--sm btn--ghost" @click="clear()">{% icon "trash-2" 16 %}{% translate "Remove" %}</button>
+          </div>
+        </div>
+        <p class="field__hint">{% translate "Describe the final turns as you would to a friend on the phone." %}</p>
+      </div>
+      {% for error in form.voice_note.errors %}<p class="field__error">{% icon "triangle-alert" 15 %}<span>{{ error }}</span></p>{% endfor %}
+    </div>
+  </section>
+</div>

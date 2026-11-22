@@ -1,0 +1,159 @@
+{% extends "wen/layouts/app.html" %}
+{% load i18n wen static %}
+{% block title %}{% translate "New address" %} · Wen{% endblock %}
+{% block map_css %}<link rel="stylesheet" href="{% static 'wen/vendor/leaflet/leaflet.css' %}">{% endblock %}
+{% block map_js %}<script src="{% static 'wen/vendor/leaflet/leaflet.js' %}" defer></script>{% endblock %}
+{% block content %}
+{{ initial_state|json_script:"create-initial" }}
+<form class="flow" method="post" enctype="multipart/form-data" novalidate
+      x-data="createFlow({{ step }})" @submit="onSubmit($event)">
+  {% csrf_token %}
+  <div class="flow__head">
+    <div>
+      <nav class="crumbs" aria-label="{% translate 'Breadcrumb' %}"><a href="{% url 'web:addresses' %}">{% translate "Saved addresses" %}</a>{% icon "chevron-right" %}<span>{% translate "New address" %}</span></nav>
+      <h1 class="flow__title" x-text="titles[step - 1]">{% translate "Describe the place" %}</h1>
+    </div>
+    <ol class="stepper flow__stepper" aria-label="{% translate 'Progress' %}">
+      {% translate "Describe" as s1 %}{% translate "Landmark" as s2 %}{% translate "Details" as s3 %}{% translate "Share" as s4 %}
+      <li class="stepper__item" :class="{ 'is-current': step === 1, 'is-done': step > 1 }" :aria-current="step === 1 ? 'step' : null"><span class="stepper__bar"></span><span class="stepper__label"><span class="stepper__num">1</span><span class="stepper__text">{{ s1 }}</span></span></li>
+      <li class="stepper__item" :class="{ 'is-current': step === 2, 'is-done': step > 2 }" :aria-current="step === 2 ? 'step' : null"><span class="stepper__bar"></span><span class="stepper__label"><span class="stepper__num">2</span><span class="stepper__text">{{ s2 }}</span></span></li>
+      <li class="stepper__item" :class="{ 'is-current': step === 3 }" :aria-current="step === 3 ? 'step' : null"><span class="stepper__bar"></span><span class="stepper__label"><span class="stepper__num">3</span><span class="stepper__text">{{ s3 }}</span></span></li>
+      <li class="stepper__item"><span class="stepper__bar"></span><span class="stepper__label"><span class="stepper__num">4</span><span class="stepper__text">{{ s4 }}</span></span></li>
+    </ol>
+  </div>
+
+  <template x-ref="titles">
+    <span>{% translate "Describe the place" %}</span><span>{% translate "Confirm the landmark" %}</span><span>{% translate "Add the details" %}</span>
+  </template>
+
+  {% if form.pin_lat.errors or form.pin_lng.errors %}<div class="form-errors" role="alert">{% icon "triangle-alert" %}<p>{% translate "Choose a landmark or place the pin on the map first." %}</p></div>{% endif %}
+  {% if form.non_field_errors %}
+    <div class="form-errors" role="alert">{% icon "triangle-alert" %}<div>{% for e in form.non_field_errors %}<p>{{ e }}</p>{% endfor %}</div></div>
+  {% endif %}
+
+  <input type="hidden" name="landmark_id" :value="landmarkId">
+  <input type="hidden" name="pin_lat" :value="pin ? pin.lat : ''">
+  <input type="hidden" name="pin_lng" :value="pin ? pin.lng : ''">
+  <input type="hidden" name="pin_source" :value="pin ? pin.source : 'landmark'">
+  <input type="hidden" name="match_quality" :value="selected ? selected.quality : ''">
+  <input type="hidden" name="language" :value="resolution ? resolution.language : ''">
+
+  {# ---------------------------------------------------------- Step 1 #}
+  <section class="flow__step card" x-show="step === 1" aria-labelledby="step1-title">
+    <div class="card__body describe">
+      <h2 class="visually-hidden" id="step1-title">{% translate "Describe the place" %}</h2>
+      <p class="describe__intro">{% translate "Write it the way you'd send it on WhatsApp. Arabic, Arabizi, English or a mix all work." %}</p>
+      <div class="field">
+        <label class="field__label" for="id_description">{% translate "Directions to the place" %}</label>
+        <textarea class="textarea describe__input" name="description" id="id_description" rows="6" maxlength="1000" dir="auto"
+                  x-model="description" x-ref="description" @keydown.ctrl.enter.prevent="resolve()" @keydown.meta.enter.prevent="resolve()"
+                  placeholder="{% translate 'Describe your location naturally... e.g. near Mar Elias Church, second street on the right.' %}"
+                  {% if form.description.errors %}aria-invalid="true"{% endif %} aria-describedby="describe-help"></textarea>
+        <div class="describe__meta" id="describe-help">
+          <span class="field__hint">{% translate "Mention a landmark people know: a church, mosque, school, shop or square." %}</span>
+          <span class="field__hint num" x-text="`${description.length}/1000`"></span>
+        </div>
+        <p class="field__error" x-show="error" x-cloak>{% icon "triangle-alert" 15 %}<span x-text="error"></span></p>
+        {% for error in form.description.errors %}<p class="field__error">{% icon "triangle-alert" 15 %}<span>{{ error }}</span></p>{% endfor %}
+      </div>
+      <div class="describe__examples">
+        <span class="text-sm muted">{% translate "Try an example" %}</span>
+        <div class="cluster cluster--tight">
+          <button type="button" class="chip" lang="en" @click="example(`After Mar Elias church, second right, next to Abu Ali's bakery, the building with green shutters, third floor.`)">English</button>
+          <button type="button" class="chip" lang="en" @click="example(`ba3d jem3it bayrut el 3arabiye, tene share3 3al yamin, bineye beige, tabe2 4`)">Arabizi</button>
+          <button type="button" class="chip" lang="ar" @click="example(`قرب كنيسة مار شربل، طلوع بعد محطة البنزين، البناية الخضرا جنب الميني ماركت، الطابق الثاني`)">عربي</button>
+        </div>
+      </div>
+    </div>
+    <div class="flow__actions">
+      <a class="btn btn--ghost" href="{% url 'web:dashboard' %}">{% translate "Cancel" %}</a>
+      <button type="button" class="btn btn--primary btn--lg" @click="resolve()" :class="{ 'is-loading': resolving }">{% icon "map-pin" %}{% translate "Resolve location" %}</button>
+    </div>
+  </section>
+
+  {# ---------------------------------------------------------- Step 2 #}
+  <section class="flow__step resolve" x-show="step === 2" x-cloak aria-labelledby="step2-title">
+    <div class="resolve__side card">
+      <div class="card__body stack">
+        <h2 class="visually-hidden" id="step2-title">{% translate "Confirm the landmark" %}</h2>
+        <div class="said">
+          <div class="cluster cluster--between">
+            <span class="text-sm muted">{% translate "You wrote" %}</span>
+            <span class="cluster cluster--tight">
+              <span class="badge" x-show="resolution" x-text="resolution && t.languages[resolution.language]"></span>
+              {% if wen_simulated %}<span class="dev-note">{% icon "flag" %}{% translate "Simulated resolver" %}</span>{% endif %}
+            </span>
+          </div>
+          <p class="said__text" dir="auto" x-html="highlighted"></p>
+          <button type="button" class="link-btn text-sm" @click="step = 1; $nextTick(() => $refs.description.focus())">{% icon "pencil" 15 %}{% translate "Edit description" %}</button>
+        </div>
+
+        <template x-if="candidates.length">
+          <fieldset class="candidates">
+            <legend class="field__label">{% translate "Landmarks found in your description" %}</legend>
+            <template x-for="c in candidates" :key="c.landmark.id">
+              <label class="choice" :class="{ 'is-selected': landmarkId === c.landmark.id }">
+                <input type="radio" name="candidate" :value="c.landmark.id" :checked="landmarkId === c.landmark.id" @change="select(c)">
+                <span class="choice__pin" :class="'is-' + c.quality">{% icon "map-pin" 18 %}</span>
+                <span class="choice__body">
+                  <span class="choice__title" x-text="name(c.landmark)"></span>
+                  <span class="choice__alt"><bdi x-text="altName(c.landmark)"></bdi> · <bdi x-text="area(c.landmark)"></bdi></span>
+                  <span class="choice__why">{% translate "Matched" %} “<span dir="auto" x-text="c.matched_text"></span>”</span>
+                </span>
+                <span class="badge" :class="{ 'badge--go': c.quality === 'strong', 'badge--caution': c.quality !== 'strong' }" x-text="t.match[c.quality]"></span>
+              </label>
+            </template>
+          </fieldset>
+        </template>
+
+        <template x-if="resolution && !candidates.length">
+          <div class="callout callout--caution">{% icon "map-pin" %}<div><strong>{% translate "No landmark found" %}</strong>{% translate "Tap the map to place the pin on the landmark or on your building. You can also edit the description to mention a well-known place." %}</div></div>
+        </template>
+
+        <div class="callout callout--caution" x-show="selected && selected.quality !== 'strong' && pin && pin.source === 'landmark'" x-cloak>
+          {% icon "triangle-alert" %}<div><strong>{% translate "Check this suggestion" %}</strong>{% translate "The match isn't certain. Make sure the pin is on the right place before you continue. The card will mark it as a suggested landmark." %}</div>
+        </div>
+        <div class="callout" x-show="pin && pin.source !== 'landmark'" x-cloak>
+          {% icon "building-2" %}<div><strong>{% translate "Pin set by you" %}</strong>{% translate "Drivers will navigate to your pin. Keep it on the building entrance if you can." %}</div>
+        </div>
+      </div>
+    </div>
+    <div class="resolve__map">
+      <div class="map" style="--map-h: 100%">
+        <div class="map__canvas" x-ref="map" dir="ltr"></div>
+        <div class="map__hint"><span class="map__chip" x-text="mapHint"></span></div>
+        <p class="map__fallback" x-show="mapFailed" x-cloak>{% translate "The map couldn't load. Directions and photos are still below." %}</p>
+      </div>
+      <template x-ref="hints">
+        <span>{% translate "Drag the pin onto your building if you know where it is" %}</span><span>{% translate "Tap the map to place your pin" %}</span>
+      </template>
+    </div>
+    <div class="flow__actions resolve__actions">
+      <button type="button" class="btn btn--ghost" @click="step = 1">{% icon "arrow-left" %}{% translate "Back" %}</button>
+      <button type="button" class="btn btn--primary btn--lg" @click="toDetails()" :disabled="!pin">
+        <span x-text="pin && pin.source === 'landmark' ? '{% translate "Use this landmark" %}' : '{% translate "Use this pin" %}'">{% translate "Use this landmark" %}</span>{% icon "arrow-right" %}
+      </button>
+    </div>
+  </section>
+
+  {# ---------------------------------------------------------- Step 3 #}
+  <section class="flow__step" x-show="step === 3" x-cloak aria-labelledby="step3-title">
+    <h2 class="visually-hidden" id="step3-title">{% translate "Add the details" %}</h2>
+    <div class="meet-summary card">
+      <span class="route__node meet-summary__node">{% icon "map-pin" %}</span>
+      <div class="meet-summary__text">
+        <span class="text-xs muted">{% translate "Meet point" %}</span>
+        <strong x-text="selected ? name(selected.landmark) : '{% translate "Pin placed by you" %}'"></strong>
+      </div>
+      <button type="button" class="link-btn text-sm" @click="step = 2">{% translate "Change" %}</button>
+    </div>
+    <div class="card"><div class="card__body">
+      {% include "wen/app/partials/details_fields.html" %}
+    </div></div>
+    <div class="flow__actions">
+      <button type="button" class="btn btn--ghost" @click="step = 2">{% icon "arrow-left" %}{% translate "Back" %}</button>
+      <button type="submit" class="btn btn--primary btn--lg" :class="{ 'is-loading': submitting }">{% translate "Save address card" %}{% icon "arrow-right" %}</button>
+    </div>
+  </section>
+</form>
+{% endblock %}

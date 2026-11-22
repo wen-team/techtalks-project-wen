@@ -1,0 +1,25 @@
+{% extends "wen/layouts/share.html" %}
+{% load i18n wen %}
+{% block title %}{% translate "Link not available" %} · Wen{% endblock %}
+{% block content %}
+<section class="status-page">
+  {% if state == "delivered" %}
+    <span class="status-page__icon is-go">{% icon "circle-check" 28 %}</span>
+    <h1>{% translate "This delivery is complete" %}</h1>
+    <p>{% translate "The link expired when the driver confirmed delivery, so the address is no longer shown." %}</p>
+  {% elif state == "expired" %}
+    <span class="status-page__icon">{% icon "clock" 28 %}</span>
+    <h1>{% translate "This link has expired" %}</h1>
+    <p>{% translate "Ask the person who sent it for a new link." %}</p>
+  {% elif state == "revoked" %}
+    <span class="status-page__icon">{% icon "link-2-off" 28 %}</span>
+    <h1>{% translate "This link was turned off" %}</h1>
+    <p>{% translate "The sender stopped sharing this address. Ask them for a new link if you still need it." %}</p>
+  {% else %}
+    <span class="status-page__icon">{% icon "link-2-off" 28 %}</span>
+    <h1>{% translate "This link isn't available" %}</h1>
+    <p>{% translate "Check that you copied the whole link, or ask the sender for a new one." %}</p>
+  {% endif %}
+  <a class="btn" href="/">{% translate "What is Wen?" %}</a>
+</section>
+{% endblock %}

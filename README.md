@@ -16,3 +16,11 @@ Notes:
 - If your django secret has a '$' character **MAKE SURE TO SUPPLY THE KEY IN THE ENV FILE LIKE THIS** : SECRET_KEY='django-insecure-<part with $>'.
 - You will get a 404 when opening it in a browser because no routes have been configured yet.
 - If you get no errors but the docker container just doesn't start, remove the -d argument to debug and troubleshoot.
+
+## First run: create the database tables
+
+Once the containers are up, run the migrations once (and again after pulling new migrations):
+
+``` docker-compose --env-file techtalks_project_wen/.env.dev -f techtalks_project_wen/docker-compose.yml exec web python manage.py migrate ```
+
+The frontend lives in `techtalks_project_wen/wen_web/`. See its [README](techtalks_project_wen/wen_web/README.md).

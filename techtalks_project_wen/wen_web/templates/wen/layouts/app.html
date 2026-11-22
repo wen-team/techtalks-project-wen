@@ -1,0 +1,54 @@
+{% extends "wen/base.html" %}
+{% load i18n wen %}
+{% block robots %}<meta name="robots" content="noindex">{% endblock %}
+{% block body %}
+<div class="app">
+  <aside class="sidebar" aria-label="{% translate 'App navigation' %}">
+    <div class="sidebar__brand">{% url 'web:dashboard' as home %}{% include "wen/components/logo.html" with href=home %}</div>
+    <a class="btn btn--primary btn--block" href="{% url 'web:address_create' %}">{% icon "plus" %}{% translate "New address" %}</a>
+    <nav class="sidebar__nav">
+      <a class="nav-item{% if nav == 'dashboard' %} is-active{% endif %}" href="{% url 'web:dashboard' %}" {% if nav == 'dashboard' %}aria-current="page"{% endif %}>{% icon "layout-dashboard" %}{% translate "Dashboard" %}</a>
+      <a class="nav-item{% if nav == 'addresses' %} is-active{% endif %}" href="{% url 'web:addresses' %}" {% if nav == 'addresses' %}aria-current="page"{% endif %}>{% icon "bookmark" %}{% translate "Saved addresses" %}</a>
+      <a class="nav-item{% if nav == 'insights' %} is-active{% endif %}" href="{% url 'web:insights' %}" {% if nav == 'insights' %}aria-current="page"{% endif %}>{% icon "chart-column" %}{% translate "Delivery insights" %}</a>
+    </nav>
+    <div class="sidebar__foot">
+      {% if wen_simulated %}<span class="dev-note" title="{% translate 'Landmark resolution and storage are simulated until the backend endpoints exist.' %}">{% icon "flag" %}{% translate "Development data" %}</span>{% endif %}
+      <div class="menu" x-data="menu" @keydown.escape="close()" @click.outside="close()">
+        <button class="user-chip" type="button" @click="toggle()" :aria-expanded="open.toString()" aria-haspopup="true">
+          <span class="avatar">{{ user|initials }}</span>
+          <span class="user-chip__text"><span class="user-chip__name">{{ user.get_full_name|default:user.get_username }}</span><span class="user-chip__mail">{{ user.email|default:user.get_username }}</span></span>
+        </button>
+        <div class="menu__panel menu__panel--up" x-show="open" x-transition.opacity.duration.120ms x-cloak role="menu">
+          {% include "wen/components/user_menu_items.html" %}
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      {% include "wen/components/logo.html" with href=home %}
+      <div class="topbar__actions">
+        {% include "wen/components/lang_switch.html" %}
+        <div class="menu" x-data="menu" @keydown.escape="close()" @click.outside="close()">
+          <button class="btn btn--ghost btn--icon" type="button" @click="toggle()" :aria-expanded="open.toString()" aria-haspopup="true" aria-label="{% translate 'Account' %}"><span class="avatar">{{ user|initials }}</span></button>
+          <div class="menu__panel" x-show="open" x-transition.opacity.duration.120ms x-cloak role="menu">
+            <p class="menu__meta">{{ user.email|default:user.get_username }}</p>
+            {% include "wen/components/user_menu_items.html" with mobile=True %}
+          </div>
+        </div>
+      </div>
+    </header>
+    <main id="content" class="{% block page_class %}page{% endblock %}">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <nav class="bottom-nav" aria-label="{% translate 'App navigation' %}">
+    <a href="{% url 'web:dashboard' %}" class="{% if nav == 'dashboard' %}is-active{% endif %}">{% icon "house" %}<span>{% translate "Home" %}</span></a>
+    <a href="{% url 'web:addresses' %}" class="{% if nav == 'addresses' %}is-active{% endif %}">{% icon "bookmark" %}<span>{% translate "Saved" %}</span></a>
+    <a href="{% url 'web:address_create' %}" class="bottom-nav__new{% if nav == 'create' %} is-active{% endif %}"><span>{% icon "plus" %}</span><span>{% translate "New" %}</span></a>
+    <a href="{% url 'web:insights' %}" class="{% if nav == 'insights' %}is-active{% endif %}">{% icon "chart-column" %}<span>{% translate "Insights" %}</span></a>
+  </nav>
+</div>
+{% endblock %}

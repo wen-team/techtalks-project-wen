@@ -1,0 +1,128 @@
+{% load i18n wen humanize %}{% comment %}
+The address card: the product's main object.
+  card      AddressCard
+  map_data  dict for the map (views.common.map_payload)
+  mode      "share" (driver/guest link), "preview" (owner), "example" (landing page)
+  token     share token, needed in "share" mode for media URLs
+{% endcomment %}
+{% with lm=card.landmark %}
+<article class="acard" aria-labelledby="acard-title-{{ card.id }}">
+  <header class="acard__pass">
+    <div class="acard__pass-row">
+      <span class="acard__kind">{% icon "lock" 15 %}{% if mode == "example" %}{% translate "Example address card" %}{% else %}{% translate "Private address card" %}{% endif %}</span>
+      {% if mode == "share" and card.link %}
+        <span class="acard__expiry">{% icon "clock" 15 %}<span>{% blocktranslate trimmed with when=card.link.expires_at|naturaltime %}Expires {{ when }}{% endblocktranslate %}</span></span>
+      {% endif %}
+    </div>
+    <h2 class="acard__title" id="acard-title-{{ card.id }}" dir="auto">{{ card.title }}</h2>
+    {% if lm %}
+      <p class="acard__meet">
+        <span class="acard__meet-label">{% translate "Meet point" %}</span>
+        <span class="acard__meet-name">{{ lm|lm_name }}</span>
+        <span class="acard__meet-alt"><bdi>{{ lm|lm_name_alt }}</bdi> · <bdi>{{ lm|lm_area }}</bdi></span>
+      </p>
+    {% else %}
+      <p class="acard__meet"><span class="acard__meet-label">{% translate "Meet point" %}</span><span class="acard__meet-name">{% translate "Pin placed by the sender" %}</span></p>
+    {% endif %}
+  </header>
+
+  <div class="acard__map">
+    {{ map_data|json_script:map_id }}
+    <div class="map" style="--map-h: {{ map_height|default:'230px' }}" x-data="pinMap('{{ map_id }}')">
+      <div class="map__canvas" x-ref="canvas" dir="ltr"></div>
+      <div class="map__overlay">
+        {% if card.pin.source == "landmark" and lm %}
+          <span class="map__chip">{% icon "landmark" %}{% translate "Landmark pin" %}</span>
+        {% else %}
+          <span class="map__chip">{% icon "building-2" %}{% translate "Building pin set by the sender" %}</span>
+        {% endif %}
+      </div>
+      <p class="map__fallback" x-show="failed" x-cloak>{% translate "The map couldn't load. Directions and photos are still below." %}</p>
+    </div>
+  </div>
+
+  <div class="acard__body">
+    {% if lm and card.match_quality and card.match_quality != "strong" and card.pin.source == "landmark" %}
+      <div class="callout callout--caution">{% icon "triangle-alert" %}<div><strong>{% translate "Suggested landmark" %}</strong>{% translate "This landmark was suggested from the description and may not be exact. Use the directions and photos to check it." %}</div></div>
+    {% endif %}
+
+    <ol class="route" aria-label="{% translate 'Directions' %}">
+      <li class="route__step {% if lm and card.match_quality != 'strong' and card.pin.source == 'landmark' %}route__step--uncertain{% else %}route__step--landmark{% endif %}">
+        <span class="route__node">{% icon "map-pin" %}</span>
+        <div class="route__body">
+          <p class="route__kicker">{% translate "Start at" %}</p>
+          {% if lm %}
+            <p class="route__title">{{ lm|lm_name }}</p>
+            <p class="route__text">{{ lm.category|category_label }} · {{ lm|lm_area }}</p>
+          {% else %}
+            <p class="route__title">{% translate "The pin on the map" %}</p>
+          {% endif %}
+        </div>
+      </li>
+      <li class="route__step">
+        <span class="route__node">{% icon "route" %}</span>
+        <div class="route__body">
+          <p class="route__kicker">{% if card.directions %}{% translate "Then" %}{% else %}{% translate "In the sender's words" %}{% endif %}</p>
+          <p class="route__text acard__words" dir="auto">{% if card.directions %}{{ card.directions|linebreaksbr }}{% else %}{{ card.description|linebreaksbr }}{% endif %}</p>
+        </div>
+      </li>
+      {% if card.building_color or card.building_description %}
+      <li class="route__step">
+        <span class="route__node">{% icon "building-2" %}</span>
+        <div class="route__body">
+          <p class="route__kicker">{% translate "Look for" %}</p>
+          <p class="route__title acard__building">
+            {% if card.building_color %}<span class="swatch__chip" style="background: {{ card.building_color|color_hex|default:'transparent' }}" aria-hidden="true"></span>{% endif %}
+            <span dir="auto">{% if card.building_color %}{% blocktranslate trimmed with color=card.building_color|color_label %}{{ color }} building{% endblocktranslate %}{% else %}{% translate "The building" %}{% endif %}</span>
+          </p>
+          {% if card.building_description %}<p class="route__text" dir="auto">{{ card.building_description }}</p>{% endif %}
+        </div>
+      </li>
+      {% endif %}
+      <li class="route__step route__step--door">
+        <span class="route__node">{% icon "door-open" %}</span>
+        <div class="route__body">
+          <p class="route__kicker">{% translate "Entrance" %}</p>
+          <p class="route__title">{% if card.floor %}{{ card.floor|floor_label }}{% else %}{% translate "Entrance details" %}{% endif %}</p>
+          {% if card.entrance_description %}<p class="route__text" dir="auto">{{ card.entrance_description }}</p>{% endif %}
+          {% if card.photos %}
+            <div class="gallery acard__gallery" x-data="lightbox">
+              {% for photo in card.photos %}
+                {% if mode == "share" %}{% url 'web:share_media' token photo.id as src %}{% else %}{% url 'web:owner_media' card.id photo.id as src %}{% endif %}
+                <button type="button" class="gallery__item" @click="show('{{ src }}')" aria-label="{% blocktranslate with n=forloop.counter %}Open entrance photo {{ n }}{% endblocktranslate %}">
+                  <img src="{{ src }}" alt="{% blocktranslate with n=forloop.counter %}Entrance photo {{ n }}{% endblocktranslate %}" loading="lazy" decoding="async">
+                </button>
+              {% endfor %}
+              <dialog class="lightbox" x-ref="dialog" @click="close()" @close="src = ''">
+                <img :src="src" alt="">
+                <button type="button" class="btn btn--icon lightbox__close" aria-label="{% translate 'Close photo' %}">{% icon "x" %}</button>
+              </dialog>
+            </div>
+          {% elif mode == "example" %}
+            <div class="acard__photo-placeholder" aria-hidden="true">{% icon "camera" %}<span>{% translate "Entrance photos appear here" %}</span></div>
+          {% endif %}
+        </div>
+      </li>
+    </ol>
+
+    {% if card.voice_note %}
+      {% if mode == "share" %}{% url 'web:share_media' token card.voice_note.id as voice_src %}{% else %}{% url 'web:owner_media' card.id card.voice_note.id as voice_src %}{% endif %}
+      {% include "wen/components/voice_player.html" with src=voice_src title=_("Voice directions for the last 150 metres") %}
+    {% endif %}
+
+    {% if card.directions %}
+      <details class="acard__original">
+        <summary>{% translate "Original description" %}</summary>
+        <p dir="auto">{{ card.description|linebreaksbr }}</p>
+      </details>
+    {% endif %}
+  </div>
+
+  {% if mode == "share" %}
+    <footer class="acard__actions">
+      <a class="btn btn--primary btn--lg" href="{% url 'web:driver_mode' token %}">{% icon "truck" %}{% translate "Start driver mode" %}</a>
+      <a class="btn btn--lg" href="https://www.google.com/maps/search/?api=1&amp;query={{ card.pin.lat|stringformat:'f' }},{{ card.pin.lng|stringformat:'f' }}" target="_blank" rel="noopener noreferrer">{% icon "external-link" %}{% translate "Open in Google Maps" %}</a>
+    </footer>
+  {% endif %}
+</article>
+{% endwith %}

@@ -1,0 +1,17 @@
+{% load i18n wen %}
+<div class="field{% if class %} {{ class }}{% endif %}">
+  <label class="field__label" for="{{ field.id_for_label }}">{{ label|default:field.label }}{% if not field.field.required and not hide_optional %}<span class="optional">{% translate "Optional" %}</span>{% endif %}</label>
+  {% if password %}
+    <div class="input-group" x-data="{ show: false }">
+      {{ field|styled:"password" }}
+      <button type="button" class="btn btn--ghost btn--icon btn--sm input-group__action" @click="show = !show"
+              :aria-pressed="show.toString()" aria-label="{% translate 'Show password' %}">
+        <span x-show="!show">{% icon "eye" 18 %}</span><span x-show="show" x-cloak>{% icon "eye-off" 18 %}</span>
+      </button>
+    </div>
+  {% else %}
+    {{ field|styled }}
+  {% endif %}
+  {% if hint %}<p class="field__hint">{{ hint }}</p>{% elif field.help_text and not field.errors %}<p class="field__hint" id="{{ field.auto_id }}_helptext">{{ field.help_text }}</p>{% endif %}
+  {% for error in field.errors %}<p class="field__error">{% icon "triangle-alert" 15 %}<span>{{ error }}</span></p>{% endfor %}
+</div>

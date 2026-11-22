@@ -1,0 +1,36 @@
+{% extends "wen/layouts/app.html" %}
+{% load i18n wen static humanize %}
+{% block title %}{{ card.title }} · Wen{% endblock %}
+{% block map_css %}<link rel="stylesheet" href="{% static 'wen/vendor/leaflet/leaflet.css' %}">{% endblock %}
+{% block map_js %}<script src="{% static 'wen/vendor/leaflet/leaflet.js' %}" defer></script>{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <nav class="crumbs" aria-label="{% translate 'Breadcrumb' %}"><a href="{% url 'web:addresses' %}">{% translate "Saved addresses" %}</a>{% icon "chevron-right" %}<span dir="auto">{{ card.title }}</span></nav>
+    <h1 dir="auto">{{ card.title }}</h1>
+    <p>{% blocktranslate trimmed with created=card.created_at|date:"j M Y" updated=card.updated_at|naturaltime %}Created {{ created }}, last changed {{ updated }}{% endblocktranslate %}</p>
+  </div>
+  <div class="cluster cluster--tight">
+    <a class="btn" href="{% url 'web:address_edit' card.id %}">{% icon "pencil" %}{% translate "Edit" %}</a>
+    {% include "wen/app/partials/delete_button.html" %}
+  </div>
+</div>
+<div class="split">
+  <div class="split__main">
+    {% include "wen/components/address_card.html" with map_id="card-map" mode="preview" %}
+  </div>
+  <aside class="split__side stack">
+    {% include "wen/components/link_panel.html" %}
+    <section class="card">
+      <div class="card__header"><h2 class="card__title">{% translate "Activity" %}</h2></div>
+      <div class="card__body">
+        <ul class="timeline">
+          {% for event in events %}
+            <li><span>{{ event.type|event_label }}</span><time datetime="{{ event.at|date:'c' }}">{{ event.at|naturaltime }}</time></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </section>
+  </aside>
+</div>
+{% endblock %}

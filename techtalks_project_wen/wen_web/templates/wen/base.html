@@ -1,0 +1,32 @@
+{% load static i18n %}<!doctype html>
+{% get_current_language as LANG %}{% get_current_language_bidi as RTL %}
+<html lang="{{ LANG }}" dir="{% if RTL %}rtl{% else %}ltr{% endif %}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{% block title %}Wen{% endblock %}</title>
+  <meta name="description" content="{% block description %}{% translate 'Wen turns the way people in Lebanon describe places into precise, shareable address cards.' %}{% endblock %}">
+  <meta name="theme-color" content="#10243a">
+  {% block robots %}{% endblock %}
+  <link rel="icon" href="{% static 'wen/img/favicon.svg' %}" type="image/svg+xml">
+  <link rel="preload" href="{% static 'wen/fonts/readex-pro-latin-full-normal.woff2' %}" as="font" type="font/woff2" crossorigin>
+  {% if RTL %}<link rel="preload" href="{% static 'wen/fonts/readex-pro-arabic-full-normal.woff2' %}" as="font" type="font/woff2" crossorigin>{% endif %}
+  <link rel="stylesheet" href="{% static 'wen/css/tokens.css' %}">
+  <link rel="stylesheet" href="{% static 'wen/css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'wen/css/components.css' %}">
+  <link rel="stylesheet" href="{% static 'wen/css/layout.css' %}">
+  <link rel="stylesheet" href="{% static 'wen/css/pages.css' %}">
+  {% block map_css %}{% endblock %}
+  {% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  <a class="skip-link" href="#content">{% translate "Skip to content" %}</a>
+  {% block body %}{% endblock %}
+  {% include "wen/components/toasts.html" %}
+  {{ wen_js_config|json_script:"wen-config" }}
+  <script src="{% static 'wen/vendor/htmx/htmx.min.js' %}" defer></script>
+  {% block map_js %}{% endblock %}
+  <script type="module" src="{% static 'wen/js/main.js' %}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

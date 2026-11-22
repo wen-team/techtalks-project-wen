@@ -38,14 +38,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'rest_framework',  # Add Django Rest Framework
     'wen_api',
-    'wen_users'
+    'wen_users',
+    'wen_web',  # Frontend (templates, static, UI views)
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',  # Arabic / English interface
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -65,6 +68,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.i18n',
+                'wen_web.context_processors.wen',
             ],
         },
     },
@@ -76,11 +81,16 @@ WSGI_APPLICATION = 'wen_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# Reads the SQL_* values from .env.dev (see .env.example).
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'OPTIONS' : {
-        }
+        'ENGINE': os.environ.get('SQL_ENGINE', 'django.db.backends.postgresql'),
+        'NAME': os.environ.get('SQL_DATABASE'),
+        'USER': os.environ.get('SQL_USER'),
+        'PASSWORD': os.environ.get('SQL_PASSWORD'),
+        'HOST': os.environ.get('SQL_HOST'),
+        'PORT': os.environ.get('SQL_PORT'),
+        'OPTIONS': {},
     }
 }
 
@@ -107,9 +117,14 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
 
-TIME_ZONE = 'UTC'
+LANGUAGES = [
+    ('en', 'English'),
+    ('ar', 'العربية'),
+]
+
+TIME_ZONE = 'Asia/Beirut'
 
 USE_I18N = True
 
@@ -120,6 +135,34 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Uploaded files (entrance photos, voice notes). Never served publicly:
+# wen_web streams them through views that check access.
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# Authentication pages live in wen_web.
+LOGIN_URL = 'web:login'
+LOGIN_REDIRECT_URL = 'web:dashboard'
+LOGOUT_REDIRECT_URL = 'web:landing'
+
+# Password-reset emails are printed in the container logs during development.
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'Wen <no-reply@wen.local>')
+
+# Wen frontend integration layer.
+#   "mock": simulated landmark resolver + JSON-file address store (development only).
+# Swap for the real backend once wen_api exposes the endpoints (see wen_web/services/).
+WEN_SERVICE_BACKEND = os.environ.get('WEN_SERVICE_BACKEND', 'mock')
+WEN_MOCK_DATA_DIR = BASE_DIR / 'media' / 'wen_dev'
+WEN_MAP_TILES = {
+    'url': os.environ.get(
+        'WEN_MAP_TILE_URL',
+        'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+    ),
+    'attribution': '&copy; OpenStreetMap contributors &copy; CARTO',
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

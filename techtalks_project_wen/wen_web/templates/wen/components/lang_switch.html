@@ -1,0 +1,10 @@
+{% load i18n wen %}{% get_current_language as LANG %}
+<form class="lang-switch" action="{% url 'set_language' %}" method="post">
+  {% csrf_token %}
+  <input type="hidden" name="next" value="{{ request.get_full_path }}">
+  {% if LANG == "ar" %}
+    <button class="btn btn--ghost btn--sm{% if dark %} btn--on-dark{% endif %}" type="submit" name="language" value="en" lang="en">{% icon "languages" %}<span>English</span></button>
+  {% else %}
+    <button class="btn btn--ghost btn--sm{% if dark %} btn--on-dark{% endif %}" type="submit" name="language" value="ar" lang="ar">{% icon "languages" %}<span>العربية</span></button>
+  {% endif %}
+</form>

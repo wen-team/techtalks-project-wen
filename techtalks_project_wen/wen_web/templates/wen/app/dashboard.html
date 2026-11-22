@@ -1,0 +1,66 @@
+{% extends "wen/layouts/app.html" %}
+{% load i18n wen humanize %}
+{% block title %}{% translate "Dashboard" %} · Wen{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>{% blocktranslate trimmed with name=user|display_name %}{{ greeting }}, {{ name }}{% endblocktranslate %}</h1>
+    <p>{% if stats.addresses %}{% translate "Here are your address cards and the links you've shared." %}{% else %}{% translate "Start by describing a place you send people to." %}{% endif %}</p>
+  </div>
+</div>
+
+<section class="quick-create card" aria-labelledby="quick-title">
+  <form class="quick-create__form" method="get" action="{% url 'web:address_create' %}">
+    <div class="quick-create__copy">
+      <h2 id="quick-title">{% translate "Create a new address" %}</h2>
+      <p class="muted text-sm">{% translate "Paste the directions you'd normally send. Wen finds the landmark next." %}</p>
+    </div>
+    <div class="quick-create__row">
+      <label class="visually-hidden" for="quick-q">{% translate "Address description" %}</label>
+      <textarea class="textarea quick-create__input" id="quick-q" name="q" rows="2" dir="auto" maxlength="1000"
+                placeholder="{% translate 'e.g. near Mar Elias Church, second street on the right' %}"></textarea>
+      <button class="btn btn--primary btn--lg" type="submit">{% icon "map-pin" %}{% translate "Continue" %}</button>
+    </div>
+  </form>
+</section>
+
+{% if stats.addresses %}
+  <section class="stats" aria-label="{% translate 'Summary' %}">
+    <div class="stat"><span class="stat__value">{{ stats.addresses }}</span><span class="stat__label">{% translate "Saved addresses" %}</span></div>
+    <div class="stat"><span class="stat__value">{{ stats.active_links }}</span><span class="stat__label">{% translate "Active links" %}</span></div>
+    <div class="stat"><span class="stat__value">{{ stats.link_opens }}</span><span class="stat__label">{% translate "Link opens" %}</span></div>
+    <div class="stat"><span class="stat__value">{{ stats.deliveries }}</span><span class="stat__label">{% translate "Confirmed deliveries" %}</span></div>
+  </section>
+
+  <section class="dash-grid">
+    <div class="card">
+      <div class="card__header">
+        <h2 class="card__title">{% translate "Recently used" %}</h2>
+        <a class="link-btn text-sm" href="{% url 'web:addresses' %}">{% translate "All addresses" %}{% icon "chevron-right" 16 %}</a>
+      </div>
+      <div class="card__body">
+        <ul class="list">
+          {% for card in recent %}
+            <li>{% include "wen/app/partials/address_row.html" %}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card__header"><h2 class="card__title">{% translate "Quick actions" %}</h2></div>
+      <div class="card__body quick-actions">
+        <a class="row-link" href="{% url 'web:address_create' %}"><span class="feature__icon">{% icon "plus" %}</span><span><strong>{% translate "New address card" %}</strong><span class="text-sm muted d-block">{% translate "Describe, confirm, share" %}</span></span></a>
+        <a class="row-link" href="{% url 'web:addresses' %}?status=active"><span class="feature__icon">{% icon "link" %}</span><span><strong>{% translate "Active links" %}</strong><span class="text-sm muted d-block">{% translate "See what's shared right now" %}</span></span></a>
+        <a class="row-link" href="{% url 'web:insights' %}"><span class="feature__icon">{% icon "chart-column" %}</span><span><strong>{% translate "Delivery insights" %}</strong><span class="text-sm muted d-block">{% translate "Confirmed deliveries and landmark checks" %}</span></span></a>
+      </div>
+    </div>
+  </section>
+{% else %}
+  <section class="empty">
+    {% include "wen/components/empty_art.html" %}
+    <h3>{% translate "No address cards yet" %}</h3>
+    <p>{% translate "Describe your home or your shop once. Wen turns it into a card you can send to any driver." %}</p>
+    <a class="btn btn--primary" href="{% url 'web:address_create' %}">{% icon "plus" %}{% translate "Create your first address" %}</a>
+  </section>
+{% endif %}
+{% endblock %}

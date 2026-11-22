@@ -1,0 +1,34 @@
+{% extends "wen/layouts/app.html" %}
+{% load i18n wen static %}
+{% block title %}{% translate "Share" %} · {{ card.title }} · Wen{% endblock %}
+{% block map_css %}<link rel="stylesheet" href="{% static 'wen/vendor/leaflet/leaflet.css' %}">{% endblock %}
+{% block map_js %}<script src="{% static 'wen/vendor/leaflet/leaflet.js' %}" defer></script>{% endblock %}
+{% block content %}
+<div class="flow">
+  <div class="flow__head">
+    <div>
+      <nav class="crumbs" aria-label="{% translate 'Breadcrumb' %}"><a href="{% url 'web:addresses' %}">{% translate "Saved addresses" %}</a>{% icon "chevron-right" %}<span dir="auto">{{ card.title }}</span></nav>
+      <h1 class="flow__title">{% translate "Preview and share" %}</h1>
+    </div>
+    <ol class="stepper flow__stepper" aria-label="{% translate 'Progress' %}">
+      <li class="stepper__item is-done"><span class="stepper__bar"></span><span class="stepper__label"><span class="stepper__num">1</span><span class="stepper__text">{% translate "Describe" %}</span></span></li>
+      <li class="stepper__item is-done"><span class="stepper__bar"></span><span class="stepper__label"><span class="stepper__num">2</span><span class="stepper__text">{% translate "Landmark" %}</span></span></li>
+      <li class="stepper__item is-done"><span class="stepper__bar"></span><span class="stepper__label"><span class="stepper__num">3</span><span class="stepper__text">{% translate "Details" %}</span></span></li>
+      <li class="stepper__item is-current" aria-current="step"><span class="stepper__bar"></span><span class="stepper__label"><span class="stepper__num">4</span><span class="stepper__text">{% translate "Share" %}</span></span></li>
+    </ol>
+  </div>
+  <div class="split">
+    <div class="split__main">
+      <p class="text-sm muted split__note">{% icon "eye" 16 %}{% translate "This is exactly what the driver sees when they open the link." %}</p>
+      {% include "wen/components/address_card.html" with map_id="card-map" mode="preview" %}
+    </div>
+    <aside class="split__side stack">
+      {% include "wen/components/link_panel.html" %}
+      <div class="cluster cluster--tight">
+        <a class="btn" href="{% url 'web:address_edit' card.id %}">{% icon "pencil" %}{% translate "Edit details" %}</a>
+        <a class="btn btn--ghost" href="{% url 'web:address_detail' card.id %}">{% translate "Done" %}</a>
+      </div>
+    </aside>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,245 @@
+{% extends "wen/layouts/public.html" %}
+{% load i18n wen static %}
+{% block title %}Wen · {% translate "Lebanon, finally on the map" %}{% endblock %}
+{% block map_css %}<link rel="stylesheet" href="{% static 'wen/vendor/leaflet/leaflet.css' %}">{% endblock %}
+{% block map_js %}<script src="{% static 'wen/vendor/leaflet/leaflet.js' %}" defer></script>{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <div class="container hero__grid">
+    <div class="hero__copy">
+      <h1 class="hero__title">{% translate "Lebanon, finally on the map." %}</h1>
+      <p class="hero__lead">{% translate "Turn the way people describe places into precise, shareable addresses. No street numbers needed." %}</p>
+      <div class="cluster hero__ctas">
+        {% if user.is_authenticated %}
+          <a class="btn btn--primary btn--lg" href="{% url 'web:address_create' %}">{% icon "plus" %}{% translate "Create an address card" %}</a>
+        {% else %}
+          <a class="btn btn--primary btn--lg" href="{% url 'web:register' %}">{% translate "Create your address card" %}</a>
+        {% endif %}
+        <a class="btn btn--lg btn--ghost" href="#how">{% translate "See how it works" %}</a>
+      </div>
+      <p class="hero__note">{% icon "languages" 18 %}{% translate "Understands Arabic, Arabizi and English. Free for households." %}</p>
+    </div>
+
+    <div class="demo card" x-data="landingDemo" id="demo">
+      <div class="demo__head">
+        <h2 class="demo__title">{% translate "Try a real description" %}</h2>
+        <div class="demo__examples" role="group" aria-label="{% translate 'Examples' %}">
+          <button type="button" class="btn btn--sm" :class="{ 'is-active': example === 0 }" @click="useExample(0)" lang="en">English</button>
+          <button type="button" class="btn btn--sm" :class="{ 'is-active': example === 1 }" @click="useExample(1)" lang="en">Arabizi</button>
+          <button type="button" class="btn btn--sm" :class="{ 'is-active': example === 2 }" @click="useExample(2)" lang="ar">عربي</button>
+        </div>
+      </div>
+      <template x-ref="examples">
+        <span>After Mar Elias church, second right, next to Abu Ali's bakery, the building with green shutters, third floor.</span>
+        <span>ba3d jem3it bayrut el 3arabiye, tene share3 3al yamin, bineye beige, tabe2 4</span>
+        <span>قرب كنيسة مار شربل، طلوع بعد محطة البنزين، البناية الخضرا جنب الميني ماركت، الطابق الثاني</span>
+      </template>
+      <form class="demo__form" @submit.prevent="resolve()">
+        <label class="visually-hidden" for="demo-text">{% translate "Address description" %}</label>
+        <textarea id="demo-text" class="textarea demo__input" x-model="text" dir="auto" rows="3" maxlength="1000"
+                  placeholder="{% translate 'Describe a place the way you would on WhatsApp' %}"></textarea>
+        <div class="cluster cluster--between">
+          {% if wen_simulated %}<span class="dev-note">{% icon "flag" %}{% translate "Simulated resolver, Beirut sample landmarks" %}</span>{% endif %}
+          <button class="btn btn--primary" type="submit" :class="{ 'is-loading': loading }" :disabled="text.trim().length < 6">{% icon "map-pin" %}{% translate "Resolve location" %}</button>
+        </div>
+      </form>
+      <div class="map demo__map" style="--map-h: 230px">
+        <div class="map__canvas" x-ref="canvas" dir="ltr"></div>
+        <p class="map__fallback" x-show="mapFailed" x-cloak>{% translate "The map couldn't load. Directions and photos are still below." %}</p>
+      </div>
+      <div class="demo__result" aria-live="polite">
+        <template x-if="error"><p class="field__error">{% icon "triangle-alert" 15 %}<span x-text="error"></span></p></template>
+        <template x-if="result && top">
+          <ol class="route demo__route">
+            <li class="route__step" :class="top.quality === 'strong' ? 'route__step--landmark' : 'route__step--uncertain'">
+              <span class="route__node">{% icon "map-pin" %}</span>
+              <div class="route__body">
+                <p class="route__kicker"><span x-text="t.match[top.quality]"></span> · <span x-text="t.languages[result.language]"></span></p>
+                <p class="route__title" x-text="name(top.landmark)"></p>
+                <p class="route__text">{% translate "Matched" %} “<span dir="auto" x-text="top.matched_text"></span>”</p>
+              </div>
+            </li>
+            <li class="route__step route__step--door" x-show="result.hints.floor || result.hints.building_color">
+              <span class="route__node">{% icon "door-open" %}</span>
+              <div class="route__body">
+                <p class="route__kicker">{% translate "Also picked up" %}</p>
+                <p class="route__title">
+                  <span x-show="result.hints.building_color" x-text="colorText(result.hints.building_color)"></span>
+                  <span x-show="result.hints.floor && result.hints.building_color">·</span>
+                  <span x-show="result.hints.floor" x-text="floorText(result.hints.floor)"></span>
+                </p>
+              </div>
+            </li>
+          </ol>
+        </template>
+        <template x-if="result && !top">
+          <p class="text-sm muted">{% translate "No known landmark in that description. In the app you can place the pin yourself." %}</p>
+        </template>
+      </div>
+      <div class="demo__i18n" hidden
+           data-floor="{% translate 'Floor {n}' %}" data-ground="{% translate 'Ground floor' %}"
+           data-building="{% translate '{color} building' %}"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section story" aria-labelledby="story-title">
+  <div class="container story__grid">
+    <div>
+      <h2 id="story-title" class="section__title">{% translate "In Lebanon, an address is a story." %}</h2>
+      <p class="lead">{% translate "People give directions with churches, bakeries, colours and turns. Maps expect street numbers. Wen reads the story and keeps every part of it." %}</p>
+    </div>
+    <figure class="story__figure">
+      {% get_current_language as LANG %}
+      {% if LANG == "ar" %}
+      <blockquote class="story__quote" lang="ar" dir="rtl">
+        <mark class="seg seg--landmark">بعد كنيسة مار الياس</mark>، <mark class="seg seg--turn">تاني مفرق عاليمين</mark>، <mark class="seg seg--landmark">حدّ فرن أبو علي</mark>، <mark class="seg seg--building">البناية يلّي شبابيكها خضر</mark>، <mark class="seg seg--floor">الطابق التالت</mark>.
+      </blockquote>
+      {% else %}
+      <blockquote class="story__quote" lang="en" dir="ltr">
+        <mark class="seg seg--landmark">After Mar Elias church</mark>, <mark class="seg seg--turn">second right</mark>, <mark class="seg seg--landmark">next to Abu Ali's bakery</mark>, <mark class="seg seg--building">the building with green shutters</mark>, <mark class="seg seg--floor">third floor</mark>.
+      </blockquote>
+      {% endif %}
+      <figcaption class="story__legend">
+        <span class="seg-key seg-key--landmark">{% translate "Landmark" %}</span>
+        <span class="seg-key seg-key--turn">{% translate "Turn" %}</span>
+        <span class="seg-key seg-key--building">{% translate "Building" %}</span>
+        <span class="seg-key seg-key--floor">{% translate "Floor" %}</span>
+      </figcaption>
+    </figure>
+    <ul class="story__facts">
+      <li><strong>{% translate "Drivers call to ask." %}</strong> {% translate "Often two or three times for one order." %}</li>
+      <li><strong>{% translate "Pins miss the door." %}</strong> {% translate "They land on the main road, a block away from the entrance." %}</li>
+      <li><strong>{% translate "Voice notes repeat." %}</strong> {% translate "The same directions, recorded again for every delivery." %}</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section" id="how" aria-labelledby="how-title">
+  <div class="container">
+    <h2 id="how-title" class="section__title">{% translate "How Wen works" %}</h2>
+    <ol class="steps">
+      <li class="steps__item">
+        <span class="steps__num">1</span>
+        <h3>{% translate "Describe" %}</h3>
+        <p>{% translate "Write or paste the directions you already send, in any mix of Arabic, Arabizi and English." %}</p>
+      </li>
+      <li class="steps__item">
+        <span class="steps__num">2</span>
+        <h3>{% translate "Resolve" %}</h3>
+        <p>{% translate "Wen finds the landmark you mentioned and shows it on the map. You confirm it or move the pin." %}</p>
+      </li>
+      <li class="steps__item">
+        <span class="steps__num">3</span>
+        <h3>{% translate "Share" %}</h3>
+        <p>{% translate "Add entrance photos, the floor and a voice note, then send one private link." %}</p>
+      </li>
+      <li class="steps__item">
+        <span class="steps__num">4</span>
+        <h3>{% translate "Arrive" %}</h3>
+        <p>{% translate "The driver navigates to the landmark, follows the photos to the door, and confirms delivery. The link expires." %}</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="section section--sunk" aria-labelledby="features-title">
+  <div class="container">
+    <h2 id="features-title" class="section__title">{% translate "Built for the last 150 metres" %}</h2>
+    <div class="features">
+      <article class="feature">
+        <span class="feature__icon">{% icon "languages" %}</span>
+        <h3>{% translate "Reads Lebanese directions" %}</h3>
+        <p>{% translate "“Ba3d el kenise”, “بعد الكنيسة” and “after the church” point to the same place. Spelling variations are expected." %}</p>
+      </article>
+      <article class="feature">
+        <span class="feature__icon">{% icon "circle-help" %}</span>
+        <h3>{% translate "Honest about uncertainty" %}</h3>
+        <p>{% translate "A suggested landmark is always labelled as a suggestion, with how well it matched. You decide what goes on the card." %}</p>
+      </article>
+      <article class="feature">
+        <span class="feature__icon">{% icon "door-open" %}</span>
+        <h3>{% translate "From landmark to door" %}</h3>
+        <p>{% translate "Building colour, floor, entrance photos and a voice note cover the part no map can." %}</p>
+      </article>
+      <article class="feature">
+        <span class="feature__icon">{% icon "shield-check" %}</span>
+        <h3>{% translate "Links that expire" %}</h3>
+        <p>{% translate "Every card is private. A shared link stops working after delivery or on the date you pick." %}</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="card" aria-labelledby="card-title">
+  <div class="container showcase">
+    <div class="showcase__copy stack">
+      <h2 id="card-title" class="section__title">{% translate "One card with everything the driver needs" %}</h2>
+      <p class="lead">{% translate "The driver opens the link on their phone. No app, no account, no call." %}</p>
+      <ul class="ticks">
+        <li>{% icon "check" 18 %}{% translate "A meet point they can navigate to" %}</li>
+        <li>{% icon "check" 18 %}{% translate "Your directions, in your own words" %}</li>
+        <li>{% icon "check" 18 %}{% translate "Building colour, entrance photos and floor" %}</li>
+        <li>{% icon "check" 18 %}{% translate "A voice note for the final turn" %}</li>
+        <li>{% icon "check" 18 %}{% translate "One tap to open Google Maps" %}</li>
+      </ul>
+    </div>
+    <div class="showcase__card">
+      {% include "wen/components/address_card.html" with card=example map_data=example_map map_id="example-map" mode="example" map_height="200px" %}
+    </div>
+  </div>
+</section>
+
+<section class="section section--sunk" id="business" aria-labelledby="business-title">
+  <div class="container">
+    <h2 id="business-title" class="section__title">{% translate "For the people sending and the people delivering" %}</h2>
+    <div class="audiences">
+      <article class="audience card card--pad">
+        <span class="feature__icon">{% icon "house" %}</span>
+        <h3>{% translate "Households" %}</h3>
+        <ul class="ticks">
+          <li>{% icon "check" 18 %}{% translate "Describe your home once, reuse the card for every order" %}</li>
+          <li>{% icon "check" 18 %}{% translate "Send guests a link instead of a voice note" %}</li>
+          <li>{% icon "check" 18 %}{% translate "Turn a link off whenever you want" %}</li>
+        </ul>
+      </article>
+      <article class="audience card card--pad">
+        <span class="feature__icon">{% icon "store" %}</span>
+        <h3>{% translate "Pharmacies, restaurants and couriers" %}</h3>
+        <ul class="ticks">
+          <li>{% icon "check" 18 %}{% translate "Paste a customer's WhatsApp directions and get a card in under two minutes" %}</li>
+          <li>{% icon "check" 18 %}{% translate "Driver mode built for a phone in one hand" %}</li>
+          <li>{% icon "check" 18 %}{% translate "See which deliveries were confirmed and how long they took" %}</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section privacy" id="privacy" aria-labelledby="privacy-title">
+  <div class="container privacy__grid">
+    <div class="stack">
+      <h2 id="privacy-title" class="section__title">{% translate "Your home stays private" %}</h2>
+      <p class="lead">{% translate "A home location is sensitive. Wen is built so that only the people you choose can see it, and only for as long as they need to." %}</p>
+    </div>
+    <ul class="privacy__list">
+      <li>{% icon "lock" %}<div><strong>{% translate "Private by default" %}</strong><span>{% translate "Cards are visible only to you until you create a link." %}</span></div></li>
+      <li>{% icon "search" %}<div><strong>{% translate "No public directory" %}</strong><span>{% translate "Addresses can't be searched or browsed by anyone else." %}</span></div></li>
+      <li>{% icon "key-round" %}<div><strong>{% translate "Links that can't be guessed" %}</strong><span>{% translate "Each link is a long random code, not your name or address." %}</span></div></li>
+      <li>{% icon "clock" %}<div><strong>{% translate "Expiry you control" %}</strong><span>{% translate "Links expire on delivery, on the date you choose, or when you turn them off." %}</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section cta">
+  <div class="container cta__inner">
+    <h2 class="cta__title">{% translate "Describe your address once. Share it every time someone asks “wen?”" %}</h2>
+    {% if user.is_authenticated %}
+      <a class="btn btn--primary btn--lg" href="{% url 'web:address_create' %}">{% translate "Create an address card" %}</a>
+    {% else %}
+      <a class="btn btn--primary btn--lg" href="{% url 'web:register' %}">{% translate "Create your free account" %}</a>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

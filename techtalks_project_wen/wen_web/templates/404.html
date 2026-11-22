@@ -1,0 +1,12 @@
+{% extends "wen/layouts/share.html" %}
+{% load i18n wen %}
+{% block title %}{% translate "Page not found" %} · Wen{% endblock %}
+{% block content %}
+<section class="status-page">
+  <span class="status-page__icon">{% icon "map-pin" 28 %}</span>
+  <h1>{% translate "We couldn't find that page" %}</h1>
+  <p>{% translate "The address may have been deleted, or the link is incomplete." %}</p>
+  <a class="btn btn--primary" href="/">{% translate "Go to the home page" %}</a>
+</section>
+{% endblock %}
+{% block foot %}{% endblock %}

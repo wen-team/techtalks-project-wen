@@ -1,0 +1,17 @@
+{% extends "wen/base.html" %}
+{% load i18n wen %}
+{% block robots %}<meta name="robots" content="noindex, nofollow"><meta name="referrer" content="same-origin">{% endblock %}
+{% block body_class %}share-shell{% endblock %}
+{% block body %}
+<header class="share-bar">
+  {% include "wen/components/logo.html" with href="/" %}
+  <div class="share-bar__actions">
+    {% block bar_actions %}{% endblock %}
+    {% include "wen/components/lang_switch.html" %}
+  </div>
+</header>
+<main id="content" class="share-main">{% block content %}{% endblock %}</main>
+<footer class="share-foot">
+  {% block foot %}{% translate "Shared privately with Wen. Only people with this link can open it." %}{% endblock %}
+</footer>
+{% endblock %}

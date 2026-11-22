@@ -1,0 +1,1599 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: wen_web\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+msgid "Arabic"
+msgstr "عربي"
+
+msgid "Arabizi"
+msgstr "عربيزي"
+
+msgid "English"
+msgstr "إنجليزي"
+
+msgid "Mixed languages"
+msgstr "لغات مختلطة"
+
+msgid "Strong match"
+msgstr "تطابق قوي"
+
+msgid "Possible match"
+msgstr "تطابق محتمل"
+
+msgid "Weak match"
+msgstr "تطابق ضعيف"
+
+msgid "Church"
+msgstr "كنيسة"
+
+msgid "Mosque"
+msgstr "مسجد"
+
+msgid "University"
+msgstr "جامعة"
+
+msgid "Street"
+msgstr "شارع"
+
+msgid "Square"
+msgstr "ساحة"
+
+msgid "Shopping centre"
+msgstr "مركز تسوّق"
+
+msgid "Roundabout"
+msgstr "دوّار"
+
+msgid "Hospital"
+msgstr "مستشفى"
+
+msgid "Landmark"
+msgstr "معلم"
+
+msgid "White"
+msgstr "أبيض"
+
+msgid "Beige"
+msgstr "بيج"
+
+msgid "Grey"
+msgstr "رمادي"
+
+msgid "Yellow"
+msgstr "أصفر"
+
+msgid "Orange"
+msgstr "برتقالي"
+
+msgid "Red"
+msgstr "أحمر"
+
+msgid "Pink"
+msgstr "زهري"
+
+msgid "Green"
+msgstr "أخضر"
+
+msgid "Blue"
+msgstr "أزرق"
+
+msgid "Brown"
+msgstr "بنّي"
+
+msgid "Black"
+msgstr "أسود"
+
+msgid "24 hours"
+msgstr "24 ساعة"
+
+msgid "3 days"
+msgstr "3 أيام"
+
+msgid "7 days"
+msgstr "7 أيام"
+
+msgid "30 days"
+msgstr "30 يومًا"
+
+msgid "Link copied"
+msgstr "تم نسخ الرابط"
+
+msgid "Couldn't copy. Select the link and copy it manually."
+msgstr "تعذّر النسخ. حدّد الرابط وانسخه يدويًا."
+
+msgid "Couldn't reach the resolver. Check your connection and try again."
+msgstr "تعذّر الوصول إلى خدمة تحديد الموقع. تحقّق من الاتصال وحاول مجددًا."
+
+msgid "Describe the place in a few more words."
+msgstr "صِف المكان ببضع كلمات إضافية."
+
+msgid ""
+"Microphone access was blocked. Allow it in your browser settings, or upload "
+"a recording."
+msgstr ""
+"تم حظر الوصول إلى الميكروفون. اسمح به من إعدادات المتصفح، أو حمّل تسجيلًا."
+
+msgid "This browser can't record audio. Upload a recording instead."
+msgstr "هذا المتصفح لا يستطيع تسجيل الصوت. حمّل تسجيلًا بدلًا من ذلك."
+
+msgid "You can add up to 4 entrance photos."
+msgstr "يمكنك إضافة 4 صور للمدخل كحدّ أقصى."
+
+msgid "Each photo must be smaller than 8 MB."
+msgstr "يجب أن يكون حجم كل صورة أقل من 8 ميغابايت."
+
+msgid "Photos must be JPEG, PNG or WebP images."
+msgstr "يجب أن تكون الصور بصيغة JPEG أو PNG أو WebP."
+
+msgid "Recording stopped at 2 minutes."
+msgstr "توقّف التسجيل عند دقيقتين."
+
+msgid "The map couldn't load. Directions and photos are still below."
+msgstr "تعذّر تحميل الخريطة. الإرشادات والصور موجودة في الأسفل."
+
+msgid "Pin moved. The card will show your building instead of the landmark."
+msgstr "تم نقل الدبوس. ستُظهر البطاقة مبناك بدلًا من المعلم."
+
+msgid "Pin placed."
+msgstr "تم وضع الدبوس."
+
+msgid "Your building"
+msgstr "مبناك"
+
+msgid "Address card"
+msgstr "بطاقة العنوان"
+
+msgid "Here is my address on Wen:"
+msgstr "هذا عنواني على وين:"
+
+msgid "Something went wrong. Check your connection and try again."
+msgstr "حدث خطأ. تحقّق من الاتصال وحاول مجددًا."
+
+msgid ""
+"That email and password don't match an account. Check both and try again."
+msgstr ""
+"البريد الإلكتروني وكلمة المرور لا يطابقان أي حساب. تحقّق منهما وحاول مجددًا."
+
+msgid "This account is inactive."
+msgstr "هذا الحساب غير مفعّل."
+
+msgid "Email"
+msgstr "البريد الإلكتروني"
+
+msgid "Full name"
+msgstr "الاسم الكامل"
+
+msgid "Password"
+msgstr "كلمة المرور"
+
+msgid "At least 8 characters. Avoid common words and all-number passwords."
+msgstr ""
+"8 أحرف على الأقل. تجنّب الكلمات الشائعة وكلمات المرور المكوّنة من أرقام فقط."
+
+msgid "Confirm password"
+msgstr "تأكيد كلمة المرور"
+
+msgid "The voice note must be an audio file (MP3, M4A, WebM, OGG or WAV)."
+msgstr ""
+"يجب أن تكون الرسالة الصوتية ملفًا صوتيًا (MP3 أو M4A أو WebM أو OGG أو WAV)."
+
+msgid "The voice note must be smaller than 10 MB."
+msgstr "يجب أن يكون حجم الرسالة الصوتية أقل من 10 ميغابايت."
+
+msgid "Address name"
+msgstr "اسم العنوان"
+
+msgid "Original description"
+msgstr "الوصف الأصلي"
+
+msgid "Building description"
+msgstr "وصف المبنى"
+
+msgid "Building colour"
+msgstr "لون المبنى"
+
+msgid "Floor"
+msgstr "الطابق"
+
+msgid "Entrance"
+msgstr "المدخل"
+
+msgid "Final directions"
+msgstr "الإرشادات الأخيرة"
+
+msgid "Link expires after"
+msgstr "تنتهي صلاحية الرابط بعد"
+
+msgid "An account with this email already exists. Log in instead."
+msgstr "يوجد حساب بهذا البريد الإلكتروني. سجّل الدخول بدلًا من ذلك."
+
+msgid "The two passwords don't match."
+msgstr "كلمتا المرور غير متطابقتين."
+
+msgid "The pin must be inside Lebanon. Move it and try again."
+msgstr "يجب أن يكون الدبوس داخل لبنان. انقله وحاول مجددًا."
+
+msgid "Choose a landmark or place the pin on the map first."
+msgstr "اختر معلمًا أو ضع الدبوس على الخريطة أولًا."
+
+msgid "That landmark is no longer available. Resolve the description again."
+msgstr "هذا المعلم لم يعد متاحًا. حدّد الموقع من الوصف مجددًا."
+
+msgid "Ground floor"
+msgstr "الطابق الأرضي"
+
+msgid "Address card created"
+msgstr "تم إنشاء بطاقة العنوان"
+
+msgid "Private link created"
+msgstr "تم إنشاء رابط خاص"
+
+msgid "Link opened"
+msgstr "تم فتح الرابط"
+
+msgid "Driver confirmed the landmark"
+msgstr "أكّد السائق المعلم"
+
+msgid "Driver reported the landmark was wrong"
+msgstr "أبلغ السائق أن المعلم خاطئ"
+
+msgid "Delivery confirmed, link expired"
+msgstr "تم تأكيد التوصيل وانتهت صلاحية الرابط"
+
+msgid "Link turned off"
+msgstr "تم إيقاف الرابط"
+
+#, python-format
+msgid "Floor %(number)s"
+msgstr "الطابق %(number)s"
+
+msgid "Your account is ready. Create your first address card."
+msgstr "حسابك جاهز. أنشئ بطاقة عنوانك الأولى."
+
+msgid "Rima's flat, Mar Elias"
+msgstr "شقة ريما، مار الياس"
+
+msgid "Five floors, green shutters, a pharmacy on the ground floor."
+msgstr "خمسة طوابق، شبابيك خضراء، صيدلية في الطابق الأرضي."
+
+msgid "Glass door to the left of the pharmacy. Press 3B."
+msgstr "باب زجاجي على يسار الصيدلية. اضغط جرس 3B."
+
+msgid ""
+"Take the second street on the right after the church. The building is next "
+"to Abu Ali's bakery."
+msgstr "خذ الشارع الثاني على اليمين بعد الكنيسة. المبنى بجانب فرن أبو علي."
+
+msgid "Good evening"
+msgstr "مساء الخير"
+
+msgid "Good morning"
+msgstr "صباح الخير"
+
+msgid "Good afternoon"
+msgstr "نهارك سعيد"
+
+msgid "Private link created."
+msgstr "تم إنشاء الرابط الخاص."
+
+msgid "Link turned off. Anyone who has it can no longer open the card."
+msgstr "تم إيقاف الرابط. لم يعد بإمكان أحد فتح البطاقة به."
+
+#, python-format
+msgid "“%(title)s” was deleted."
+msgstr "تم حذف «%(title)s»."
+
+msgid "Address card saved. Create its private link to share it."
+msgstr "تم حفظ بطاقة العنوان. أنشئ رابطها الخاص لمشاركتها."
+
+msgid "Changes saved."
+msgstr "تم حفظ التغييرات."
+
+msgid "Page not found"
+msgstr "الصفحة غير موجودة"
+
+msgid "We couldn't find that page"
+msgstr "لم نجد هذه الصفحة"
+
+msgid "The address may have been deleted, or the link is incomplete."
+msgstr "ربما حُذف العنوان، أو أن الرابط غير مكتمل."
+
+msgid "Go to the home page"
+msgstr "الانتقال إلى الصفحة الرئيسية"
+
+msgid ""
+"Wen turns the way people in Lebanon describe places into precise, shareable "
+"address cards."
+msgstr ""
+"يحوّل وين طريقة وصف الناس للأماكن في لبنان إلى بطاقات عناوين دقيقة وقابلة "
+"للمشاركة."
+
+msgid "Skip to content"
+msgstr "انتقل إلى المحتوى"
+
+msgid "Pause voice note"
+msgstr "إيقاف الرسالة الصوتية مؤقتًا"
+
+msgid "Play voice note"
+msgstr "تشغيل الرسالة الصوتية"
+
+msgid "Playback position"
+msgstr "موضع التشغيل"
+
+msgid "Private link"
+msgstr "الرابط الخاص"
+
+msgid "Active"
+msgstr "فعّال"
+
+msgid "Delivered"
+msgstr "تم التوصيل"
+
+msgid "Expired"
+msgstr "منتهي الصلاحية"
+
+msgid "Turned off"
+msgstr "متوقّف"
+
+msgid "No link yet"
+msgstr "لا يوجد رابط بعد"
+
+msgid "Copied"
+msgstr "تم النسخ"
+
+msgid "Copy"
+msgstr "نسخ"
+
+#, python-format
+msgid ""
+"Expires %(when)s (%(date)s), or as soon as the driver confirms delivery."
+msgstr "تنتهي صلاحيته %(when)s (%(date)s)، أو فور تأكيد السائق للتوصيل."
+
+msgid "Share"
+msgstr "مشاركة"
+
+msgid "Send on WhatsApp"
+msgstr "إرسال عبر واتساب"
+
+msgid "Open as driver"
+msgstr "فتح كسائق"
+
+msgid "Replace link"
+msgstr "استبدال الرابط"
+
+msgid "Turn off link"
+msgstr "إيقاف الرابط"
+
+msgid "Turn off this link?"
+msgstr "إيقاف هذا الرابط؟"
+
+msgid ""
+"Anyone who has the link will see that it no longer works. You can create a "
+"new link at any time."
+msgstr ""
+"كل من لديه الرابط سيرى أنه لم يعد يعمل. يمكنك إنشاء رابط جديد في أي وقت."
+
+msgid "Keep link"
+msgstr "إبقاء الرابط"
+
+#, python-format
+msgid ""
+"Delivered %(when)s. The link expired when the driver confirmed delivery."
+msgstr "تم التوصيل %(when)s. انتهت صلاحية الرابط عندما أكّد السائق التوصيل."
+
+#, python-format
+msgid "The last link expired %(when)s."
+msgstr "انتهت صلاحية آخر رابط %(when)s."
+
+msgid "You turned off the last link. It no longer opens the card."
+msgstr "أوقفت آخر رابط. لم يعد يفتح البطاقة."
+
+msgid ""
+"Create a private link to send this card to a driver or a guest. Only people "
+"with the link can open it."
+msgstr ""
+"أنشئ رابطًا خاصًا لإرسال هذه البطاقة إلى سائق أو ضيف. وحدهم من لديهم الرابط "
+"يستطيعون فتحها."
+
+msgid "Create private link"
+msgstr "إنشاء رابط خاص"
+
+msgid "Create a new link"
+msgstr "إنشاء رابط جديد"
+
+msgid "Wen home page"
+msgstr "صفحة وين الرئيسية"
+
+msgid "Change password"
+msgstr "تغيير كلمة المرور"
+
+msgid "Development data"
+msgstr "بيانات تطوير"
+
+msgid "Log out"
+msgstr "تسجيل الخروج"
+
+msgid "Example address card"
+msgstr "مثال على بطاقة عنوان"
+
+msgid "Private address card"
+msgstr "بطاقة عنوان خاصة"
+
+#, python-format
+msgid "Expires %(when)s"
+msgstr "تنتهي صلاحيتها %(when)s"
+
+msgid "Meet point"
+msgstr "نقطة اللقاء"
+
+msgid "Pin placed by the sender"
+msgstr "دبوس وضعه المرسِل"
+
+msgid "Landmark pin"
+msgstr "دبوس المعلم"
+
+msgid "Building pin set by the sender"
+msgstr "دبوس المبنى من المرسِل"
+
+msgid "Suggested landmark"
+msgstr "معلم مقترح"
+
+msgid ""
+"This landmark was suggested from the description and may not be exact. Use "
+"the directions and photos to check it."
+msgstr ""
+"اقتُرح هذا المعلم من الوصف وقد لا يكون دقيقًا. استعن بالإرشادات والصور "
+"للتأكد منه."
+
+msgid "Directions"
+msgstr "الإرشادات"
+
+msgid "Start at"
+msgstr "ابدأ من"
+
+msgid "The pin on the map"
+msgstr "الدبوس على الخريطة"
+
+msgid "Then"
+msgstr "ثم"
+
+msgid "In the sender's words"
+msgstr "بكلمات المرسِل"
+
+msgid "Look for"
+msgstr "ابحث عن"
+
+#, python-format
+msgid "%(color)s building"
+msgstr "مبنى %(color)s"
+
+msgid "The building"
+msgstr "المبنى"
+
+msgid "Entrance details"
+msgstr "تفاصيل المدخل"
+
+#, python-format
+msgid "Open entrance photo %(n)s"
+msgstr "فتح صورة المدخل %(n)s"
+
+#, python-format
+msgid "Entrance photo %(n)s"
+msgstr "صورة المدخل %(n)s"
+
+msgid "Close photo"
+msgstr "إغلاق الصورة"
+
+msgid "Entrance photos appear here"
+msgstr "تظهر صور المدخل هنا"
+
+msgid "Start driver mode"
+msgstr "بدء وضع السائق"
+
+msgid "Open in Google Maps"
+msgstr "فتح في خرائط Google"
+
+msgid "Optional"
+msgstr "اختياري"
+
+msgid "Show password"
+msgstr "إظهار كلمة المرور"
+
+msgid "Wen home"
+msgstr "الصفحة الرئيسية لوين"
+
+msgid "Dismiss"
+msgstr "إغلاق"
+
+msgid "Main"
+msgstr "رئيسي"
+
+msgid "How it works"
+msgstr "كيف يعمل"
+
+msgid "For businesses"
+msgstr "للشركات"
+
+msgid "Privacy"
+msgstr "الخصوصية"
+
+msgid "Open dashboard"
+msgstr "فتح لوحة التحكم"
+
+msgid "Log in"
+msgstr "تسجيل الدخول"
+
+msgid "Get started"
+msgstr "ابدأ الآن"
+
+msgid "Menu"
+msgstr "القائمة"
+
+msgid ""
+"Addresses the way Lebanon gives them: landmarks, turns, colours and floors, "
+"turned into a card anyone can follow."
+msgstr ""
+"عناوين بالطريقة التي يعطيها بها اللبنانيون: معالم ومنعطفات وألوان وطوابق، في"
+" بطاقة يستطيع أي شخص اتباعها."
+
+msgid "Product"
+msgstr "المنتج"
+
+msgid "Account"
+msgstr "الحساب"
+
+msgid "Dashboard"
+msgstr "لوحة التحكم"
+
+msgid "Saved addresses"
+msgstr "العناوين المحفوظة"
+
+msgid "Create an account"
+msgstr "إنشاء حساب"
+
+msgid "Reset password"
+msgstr "إعادة تعيين كلمة المرور"
+
+msgid "Trust"
+msgstr "الثقة"
+
+msgid "Privacy principles"
+msgstr "مبادئ الخصوصية"
+
+msgid "Wen, a TechTalks internship project, Beirut."
+msgstr "وين، مشروع تدريب TechTalks، بيروت."
+
+msgid "Shared privately with Wen. Only people with this link can open it."
+msgstr ""
+"تمت مشاركته بشكل خاص عبر وين. وحدهم من لديهم هذا الرابط يستطيعون فتحه."
+
+msgid "App navigation"
+msgstr "تنقّل التطبيق"
+
+msgid "New address"
+msgstr "عنوان جديد"
+
+msgid "Delivery insights"
+msgstr "إحصاءات التوصيل"
+
+msgid ""
+"Landmark resolution and storage are simulated until the backend endpoints "
+"exist."
+msgstr "تحديد المعالم والتخزين محاكاة إلى أن تصبح واجهات الخادم جاهزة."
+
+msgid "Home"
+msgstr "الرئيسية"
+
+msgid "Saved"
+msgstr "المحفوظة"
+
+msgid "New"
+msgstr "جديد"
+
+msgid "Insights"
+msgstr "الإحصاءات"
+
+msgid "Where exactly?"
+msgstr "وين بالزبط؟"
+
+msgid ""
+"The question every driver in Lebanon asks. Wen answers it before they have "
+"to call."
+msgstr ""
+"السؤال الذي يطرحه كل سائق في لبنان. وين يجيب عنه قبل أن يضطر إلى الاتصال."
+
+msgid "Private address cards. Links that expire."
+msgstr "بطاقات عناوين خاصة. روابط تنتهي صلاحيتها."
+
+msgid "Reset your password"
+msgstr "إعادة تعيين كلمة المرور"
+
+msgid ""
+"Enter the email you signed up with. We'll send a link to choose a new "
+"password."
+msgstr ""
+"أدخل البريد الإلكتروني الذي سجّلت به. سنرسل رابطًا لاختيار كلمة مرور جديدة."
+
+msgid "Send reset link"
+msgstr "إرسال رابط إعادة التعيين"
+
+msgid "Back to log in"
+msgstr "العودة إلى تسجيل الدخول"
+
+msgid "Welcome back"
+msgstr "أهلًا بعودتك"
+
+msgid "Log in to manage your address cards and links."
+msgstr "سجّل الدخول لإدارة بطاقات عناوينك وروابطك."
+
+msgid "Forgot your password?"
+msgstr "نسيت كلمة المرور؟"
+
+msgid "New to Wen?"
+msgstr "جديد على وين؟"
+
+msgid "Choose a new password"
+msgstr "اختر كلمة مرور جديدة"
+
+msgid ""
+"Use at least 8 characters. Avoid common words and all-number passwords."
+msgstr ""
+"استخدم 8 أحرف على الأقل. تجنّب الكلمات الشائعة وكلمات المرور المكوّنة من "
+"أرقام فقط."
+
+msgid "Save new password"
+msgstr "حفظ كلمة المرور الجديدة"
+
+msgid "This reset link doesn't work"
+msgstr "رابط إعادة التعيين هذا لا يعمل"
+
+msgid "It was already used or it expired. Request a new one."
+msgstr "سبق استخدامه أو انتهت صلاحيته. اطلب رابطًا جديدًا."
+
+msgid "Request a new link"
+msgstr "طلب رابط جديد"
+
+msgid "Create your account"
+msgstr "أنشئ حسابك"
+
+msgid ""
+"Free for households. Your address cards stay private until you share a link."
+msgstr "مجاني للأسر. تبقى بطاقات عناوينك خاصة إلى أن تشارك رابطًا."
+
+msgid "Create account"
+msgstr "إنشاء الحساب"
+
+msgid "Already have an account?"
+msgstr "لديك حساب؟"
+
+msgid "Check your email"
+msgstr "تحقّق من بريدك الإلكتروني"
+
+msgid ""
+"If an account uses that email, a link to reset the password is on its way. "
+"It works once and expires in 3 days."
+msgstr ""
+"إذا كان هناك حساب بهذا البريد الإلكتروني، فرابط إعادة تعيين كلمة المرور في "
+"طريقه إليك. يعمل مرة واحدة وتنتهي صلاحيته بعد 3 أيام."
+
+msgid ""
+"In development, the email is printed in the server logs (docker compose "
+"output) instead of being sent."
+msgstr ""
+"أثناء التطوير، تُطبع الرسالة في سجلات الخادم (مخرجات docker compose) بدلًا "
+"من إرسالها."
+
+msgid "Password changed"
+msgstr "تم تغيير كلمة المرور"
+
+msgid "You can log in with your new password now."
+msgstr "يمكنك تسجيل الدخول بكلمة المرور الجديدة الآن."
+
+msgid "Someone asked to reset the password for your Wen account."
+msgstr "طلب أحدهم إعادة تعيين كلمة المرور لحسابك على وين."
+
+msgid "Choose a new password here:"
+msgstr "اختر كلمة مرور جديدة من هنا:"
+
+msgid "If it wasn't you, ignore this email. Your password stays the same."
+msgstr "إذا لم تكن أنت، تجاهل هذه الرسالة. ستبقى كلمة مرورك كما هي."
+
+msgid "Reset your Wen password"
+msgstr "إعادة تعيين كلمة مرور وين"
+
+msgid "Breadcrumb"
+msgstr "مسار التنقّل"
+
+msgid "Preview and share"
+msgstr "المعاينة والمشاركة"
+
+msgid "Progress"
+msgstr "التقدّم"
+
+msgid "Describe"
+msgstr "الوصف"
+
+msgid "Details"
+msgstr "التفاصيل"
+
+msgid "This is exactly what the driver sees when they open the link."
+msgstr "هذا بالضبط ما يراه السائق عند فتح الرابط."
+
+msgid "Edit details"
+msgstr "تعديل التفاصيل"
+
+msgid "Done"
+msgstr "تم"
+
+msgid ""
+"For businesses that deliver. Every number here comes from links you created "
+"and what drivers did with them."
+msgstr ""
+"للشركات التي توصّل الطلبات. كل رقم هنا مصدره الروابط التي أنشأتها وما فعله "
+"السائقون بها."
+
+msgid "Summary"
+msgstr "ملخّص"
+
+msgid "Confirmed deliveries"
+msgstr "عمليات توصيل مؤكَّدة"
+
+msgid "Link opens"
+msgstr "مرات فتح الروابط"
+
+msgid "Landmarks confirmed by drivers"
+msgstr "معالم أكّدها السائقون"
+
+#, python-format
+msgid "%(n)s check"
+msgid_plural "%(n)s checks"
+msgstr[0] "%(n)s تأكيد"
+msgstr[1] "تأكيد واحد"
+msgstr[2] "تأكيدان"
+msgstr[3] "%(n)s تأكيدات"
+msgstr[4] "%(n)s تأكيدًا"
+msgstr[5] "%(n)s تأكيد"
+
+msgid "min"
+msgstr "د"
+
+msgid "Median time, link opened to delivered"
+msgstr "الوقت الوسيط من فتح الرابط حتى التوصيل"
+
+msgid "Calls saved aren't measured yet"
+msgstr "المكالمات الموفَّرة غير مقاسة بعد"
+
+msgid ""
+"Wen doesn't record phone calls, so it can't tell you how many calls a card "
+"saved. Once drivers can report calls in driver mode, that number will appear"
+" here."
+msgstr ""
+"لا يسجّل وين المكالمات الهاتفية، لذا لا يستطيع إخبارك بعدد المكالمات التي "
+"وفّرتها البطاقة. عندما يتمكّن السائقون من الإبلاغ عن المكالمات في وضع "
+"السائق، سيظهر هذا الرقم هنا."
+
+msgid "Recent deliveries"
+msgstr "آخر عمليات التوصيل"
+
+msgid "Address"
+msgstr "العنوان"
+
+msgid "Time to door"
+msgstr "الوقت حتى الباب"
+
+msgid "Not recorded"
+msgstr "غير مسجَّل"
+
+#, python-format
+msgid "%(m)s min"
+msgstr "%(m)s د"
+
+msgid "No confirmed deliveries yet"
+msgstr "لا توجد عمليات توصيل مؤكَّدة بعد"
+
+msgid ""
+"When a driver taps “Confirm delivery” in driver mode, it shows up here."
+msgstr "عندما يضغط السائق «تأكيد التوصيل» في وضع السائق، يظهر ذلك هنا."
+
+msgid ""
+"Only you can see this list. Drivers only see a card when you send them its "
+"link."
+msgstr ""
+"وحدك ترى هذه القائمة. لا يرى السائقون أي بطاقة إلا عندما ترسل لهم رابطها."
+
+msgid "Search addresses"
+msgstr "البحث في العناوين"
+
+msgid "Search by name, landmark or floor"
+msgstr "ابحث بالاسم أو المعلم أو الطابق"
+
+msgid "Filter by link"
+msgstr "التصفية حسب الرابط"
+
+msgid "All"
+msgstr "الكل"
+
+msgid "Link active"
+msgstr "الرابط فعّال"
+
+msgid "Not shared"
+msgstr "غير مُشارَك"
+
+msgid "Link ended"
+msgstr "انتهى الرابط"
+
+msgid "Sort"
+msgstr "الترتيب"
+
+msgid "Recently used"
+msgstr "المستخدمة مؤخرًا"
+
+msgid "Newest first"
+msgstr "الأحدث أولًا"
+
+msgid "Name A–Z"
+msgstr "الاسم أبجديًا"
+
+msgid "Apply"
+msgstr "تطبيق"
+
+#, python-format
+msgid "%(greeting)s, %(name)s"
+msgstr "%(greeting)s يا %(name)s"
+
+msgid "Here are your address cards and the links you've shared."
+msgstr "هذه بطاقات عناوينك والروابط التي شاركتها."
+
+msgid "Start by describing a place you send people to."
+msgstr "ابدأ بوصف مكان ترسل الناس إليه."
+
+msgid "Create a new address"
+msgstr "إنشاء عنوان جديد"
+
+msgid "Paste the directions you'd normally send. Wen finds the landmark next."
+msgstr "الصق الإرشادات التي ترسلها عادةً. يجد وين المعلم بعدها."
+
+msgid "Address description"
+msgstr "وصف العنوان"
+
+msgid "e.g. near Mar Elias Church, second street on the right"
+msgstr "مثلًا: قرب كنيسة مار الياس، تاني شارع عاليمين"
+
+msgid "Continue"
+msgstr "متابعة"
+
+msgid "Active links"
+msgstr "الروابط الفعّالة"
+
+msgid "All addresses"
+msgstr "كل العناوين"
+
+msgid "Quick actions"
+msgstr "إجراءات سريعة"
+
+msgid "New address card"
+msgstr "بطاقة عنوان جديدة"
+
+msgid "Describe, confirm, share"
+msgstr "صِف، أكّد، شارك"
+
+msgid "See what's shared right now"
+msgstr "شاهد ما هو مُشارَك الآن"
+
+msgid "Confirmed deliveries and landmark checks"
+msgstr "عمليات التوصيل المؤكَّدة وتأكيدات المعالم"
+
+msgid "No address cards yet"
+msgstr "لا توجد بطاقات عناوين بعد"
+
+msgid ""
+"Describe your home or your shop once. Wen turns it into a card you can send "
+"to any driver."
+msgstr "صِف بيتك أو متجرك مرة واحدة. يحوّله وين إلى بطاقة ترسلها لأي سائق."
+
+msgid "Create your first address"
+msgstr "أنشئ عنوانك الأول"
+
+msgid "Edit"
+msgstr "تعديل"
+
+msgid "Edit address card"
+msgstr "تعديل بطاقة العنوان"
+
+msgid "The pin position was missing. Check the pin on the map and save again."
+msgstr "موضع الدبوس مفقود. تحقّق من الدبوس على الخريطة واحفظ مجددًا."
+
+msgid "Pin and description"
+msgstr "الدبوس والوصف"
+
+msgid "Drag the pin to move it"
+msgstr "اسحب الدبوس لتحريكه"
+
+#, python-format
+msgid "Landmark: %(name)s"
+msgstr "المعلم: %(name)s"
+
+msgid "Pin moved by you"
+msgstr "دبوس نقلته أنت"
+
+msgid "Put the pin back on the landmark"
+msgstr "إعادة الدبوس إلى المعلم"
+
+msgid "Cancel"
+msgstr "إلغاء"
+
+msgid "Save changes"
+msgstr "حفظ التغييرات"
+
+msgid "Describe the place"
+msgstr "صِف المكان"
+
+msgid "Confirm the landmark"
+msgstr "أكّد المعلم"
+
+msgid "Add the details"
+msgstr "أضف التفاصيل"
+
+msgid ""
+"Write it the way you'd send it on WhatsApp. Arabic, Arabizi, English or a "
+"mix all work."
+msgstr ""
+"اكتبه كما ترسله على واتساب. العربية والعربيزي والإنجليزية أو مزيج منها، كلها"
+" تعمل."
+
+msgid "Directions to the place"
+msgstr "الإرشادات إلى المكان"
+
+msgid ""
+"Describe your location naturally... e.g. near Mar Elias Church, second "
+"street on the right."
+msgstr "صِف موقعك بطريقتك... مثلًا: قرب كنيسة مار الياس، تاني شارع عاليمين."
+
+msgid ""
+"Mention a landmark people know: a church, mosque, school, shop or square."
+msgstr "اذكر معلمًا يعرفه الناس: كنيسة أو جامع أو مدرسة أو محل أو ساحة."
+
+msgid "Try an example"
+msgstr "جرّب مثالًا"
+
+msgid "Resolve location"
+msgstr "حدّد الموقع"
+
+msgid "You wrote"
+msgstr "كتبتَ"
+
+msgid "Simulated resolver"
+msgstr "تحديد موقع تجريبي"
+
+msgid "Edit description"
+msgstr "تعديل الوصف"
+
+msgid "Landmarks found in your description"
+msgstr "المعالم الموجودة في وصفك"
+
+msgid "Matched"
+msgstr "تطابق مع"
+
+msgid "No landmark found"
+msgstr "لم يُعثر على معلم"
+
+msgid ""
+"Tap the map to place the pin on the landmark or on your building. You can "
+"also edit the description to mention a well-known place."
+msgstr ""
+"اضغط على الخريطة لوضع الدبوس على المعلم أو على مبناك. يمكنك أيضًا تعديل "
+"الوصف لذكر مكان معروف."
+
+msgid "Check this suggestion"
+msgstr "تحقّق من هذا الاقتراح"
+
+msgid ""
+"The match isn't certain. Make sure the pin is on the right place before you "
+"continue. The card will mark it as a suggested landmark."
+msgstr ""
+"التطابق غير مؤكد. تأكّد أن الدبوس في المكان الصحيح قبل المتابعة. ستشير "
+"البطاقة إليه كمعلم مقترح."
+
+msgid "Pin set by you"
+msgstr "دبوس وضعته أنت"
+
+msgid ""
+"Drivers will navigate to your pin. Keep it on the building entrance if you "
+"can."
+msgstr "سيتوجّه السائقون إلى دبوسك. ضعه على مدخل المبنى إن أمكن."
+
+msgid "Drag the pin onto your building if you know where it is"
+msgstr "اسحب الدبوس إلى مبناك إن كنت تعرف مكانه"
+
+msgid "Tap the map to place your pin"
+msgstr "اضغط على الخريطة لوضع دبوسك"
+
+msgid "Back"
+msgstr "رجوع"
+
+msgid "Use this landmark"
+msgstr "استخدم هذا المعلم"
+
+msgid "Use this pin"
+msgstr "استخدم هذا الدبوس"
+
+msgid "Pin placed by you"
+msgstr "دبوس وضعته أنت"
+
+msgid "Change"
+msgstr "تغيير"
+
+msgid "Save address card"
+msgstr "حفظ بطاقة العنوان"
+
+#, python-format
+msgid "Created %(created)s, last changed %(updated)s"
+msgstr "أُنشئت في %(created)s، وآخر تعديل %(updated)s"
+
+msgid "Activity"
+msgstr "النشاط"
+
+msgid "Pin on map"
+msgstr "دبوس على الخريطة"
+
+msgid "Name this address"
+msgstr "سمِّ هذا العنوان"
+
+msgid "From your description"
+msgstr "من وصفك"
+
+msgid "Other"
+msgstr "غير ذلك"
+
+msgid "e.g. stone, two-tone, blue balconies"
+msgstr "مثلًا: حجر، لونان، شرفات زرقاء"
+
+msgid "Describe the colour"
+msgstr "صِف اللون"
+
+msgid "e.g. 3, or Ground"
+msgstr "مثلًا: 3، أو أرضي"
+
+msgid "Quick floor"
+msgstr "اختيار سريع للطابق"
+
+msgid "Ground"
+msgstr "أرضي"
+
+msgid "Use 0 or “Ground” for the ground floor."
+msgstr "استخدم 0 أو «أرضي» للطابق الأرضي."
+
+msgid "The entrance"
+msgstr "المدخل"
+
+msgid "Entrance photos"
+msgstr "صور المدخل"
+
+msgid "Optional, up to 4"
+msgstr "اختياري، حتى 4"
+
+msgid "Will be removed"
+msgstr "ستُحذف"
+
+msgid "Remove this photo"
+msgstr "حذف هذه الصورة"
+
+msgid "New entrance photo"
+msgstr "صورة مدخل جديدة"
+
+msgid "Remove photo"
+msgstr "حذف الصورة"
+
+msgid "Add entrance photos"
+msgstr "أضف صور المدخل"
+
+msgid ""
+"Take a photo from the street, facing the door. Photos are resized before "
+"upload."
+msgstr "التقط صورة من الشارع باتجاه الباب. يُصغَّر حجم الصور قبل الرفع."
+
+msgid "Preparing photos…"
+msgstr "جارٍ تجهيز الصور…"
+
+msgid "The last 150 metres"
+msgstr "آخر 150 مترًا"
+
+msgid "Voice note"
+msgstr "رسالة صوتية"
+
+msgid "Optional, up to 2 minutes"
+msgstr "اختياري، حتى دقيقتين"
+
+msgid "Remove the current voice note"
+msgstr "حذف الرسالة الصوتية الحالية"
+
+msgid "Record a new one"
+msgstr "تسجيل رسالة جديدة"
+
+msgid "Record voice note"
+msgstr "تسجيل رسالة صوتية"
+
+msgid "Upload audio"
+msgstr "رفع ملف صوتي"
+
+msgid "Stop"
+msgstr "إيقاف"
+
+msgid "Record again"
+msgstr "إعادة التسجيل"
+
+msgid "Remove"
+msgstr "حذف"
+
+msgid "Describe the final turns as you would to a friend on the phone."
+msgstr "صِف المنعطفات الأخيرة كما تصفها لصديق على الهاتف."
+
+msgid "Delete"
+msgstr "حذف"
+
+#, python-format
+msgid "Delete “%(title)s”?"
+msgstr "حذف «%(title)s»؟"
+
+msgid ""
+"The card, its photos and voice note are removed. Any link you shared stops "
+"working. This can't be undone."
+msgstr ""
+"ستُحذف البطاقة وصورها ورسالتها الصوتية. أي رابط شاركته سيتوقّف عن العمل. لا "
+"يمكن التراجع عن ذلك."
+
+msgid "Delete address"
+msgstr "حذف العنوان"
+
+msgid "No saved addresses yet"
+msgstr "لا توجد عناوين محفوظة بعد"
+
+msgid "Every address card you create is saved here, ready to share again."
+msgstr "تُحفظ هنا كل بطاقة عنوان تنشئها، جاهزة للمشاركة مجددًا."
+
+msgid "Create an address card"
+msgstr "إنشاء بطاقة عنوان"
+
+msgid "Nothing matches"
+msgstr "لا نتائج مطابقة"
+
+msgid "Try another word, or show all addresses."
+msgstr "جرّب كلمة أخرى، أو اعرض كل العناوين."
+
+msgid "Clear filters"
+msgstr "مسح عوامل التصفية"
+
+#, python-format
+msgid "%(n)s address"
+msgid_plural "%(n)s addresses"
+msgstr[0] "%(n)s عنوان"
+msgstr[1] "عنوان واحد"
+msgstr[2] "عنوانان"
+msgstr[3] "%(n)s عناوين"
+msgstr[4] "%(n)s عنوانًا"
+msgstr[5] "%(n)s عنوان"
+
+msgid "Voice"
+msgstr "صوت"
+
+#, python-format
+msgid "Used %(when)s"
+msgstr "استُخدم %(when)s"
+
+msgid "Copy link"
+msgstr "نسخ الرابط"
+
+msgid "Create link"
+msgstr "إنشاء رابط"
+
+msgid "Link not available"
+msgstr "الرابط غير متاح"
+
+msgid "This delivery is complete"
+msgstr "اكتمل هذا التوصيل"
+
+msgid ""
+"The link expired when the driver confirmed delivery, so the address is no "
+"longer shown."
+msgstr ""
+"انتهت صلاحية الرابط عندما أكّد السائق التوصيل، لذا لم يعد العنوان ظاهرًا."
+
+msgid "This link has expired"
+msgstr "انتهت صلاحية هذا الرابط"
+
+msgid "Ask the person who sent it for a new link."
+msgstr "اطلب رابطًا جديدًا من الشخص الذي أرسله."
+
+msgid "This link was turned off"
+msgstr "تم إيقاف هذا الرابط"
+
+msgid ""
+"The sender stopped sharing this address. Ask them for a new link if you "
+"still need it."
+msgstr ""
+"أوقف المرسِل مشاركة هذا العنوان. اطلب منه رابطًا جديدًا إن كنت لا تزال بحاجة"
+" إليه."
+
+msgid "This link isn't available"
+msgstr "هذا الرابط غير متاح"
+
+msgid "Check that you copied the whole link, or ask the sender for a new one."
+msgstr "تأكّد أنك نسخت الرابط كاملًا، أو اطلب رابطًا جديدًا من المرسِل."
+
+msgid "What is Wen?"
+msgstr "ما هو وين؟"
+
+msgid "Driver mode"
+msgstr "وضع السائق"
+
+msgid "Card"
+msgstr "البطاقة"
+
+msgid "Delivery stages"
+msgstr "مراحل التوصيل"
+
+msgid "Reach the landmark"
+msgstr "الوصول إلى المعلم"
+
+msgid "Find the door"
+msgstr "إيجاد الباب"
+
+msgid "Drive to"
+msgstr "توجّه إلى"
+
+msgid "Drive to the pin"
+msgstr "توجّه إلى الدبوس"
+
+msgid "Pin set by the sender"
+msgstr "دبوس وضعه المرسِل"
+
+msgid ""
+"It may not be exact. Listen to the voice note or read the directions if it "
+"doesn't look right."
+msgstr ""
+"قد لا يكون دقيقًا. استمع إلى الرسالة الصوتية أو اقرأ الإرشادات إذا بدا غير "
+"صحيح."
+
+msgid "Open navigation"
+msgstr "فتح الملاحة"
+
+msgid "You reported the landmark as wrong"
+msgstr "أبلغت أن المعلم خاطئ"
+
+msgid "Use the sender's own words and voice note below."
+msgstr "اتّبع كلمات المرسِل ورسالته الصوتية أدناه."
+
+msgid "From the landmark"
+msgstr "من المعلم"
+
+msgid "Confirm delivery"
+msgstr "تأكيد التوصيل"
+
+msgid "Confirm the delivery?"
+msgstr "تأكيد التوصيل؟"
+
+msgid ""
+"The link expires straight away and the address is hidden from everyone who "
+"has it."
+msgstr "تنتهي صلاحية الرابط فورًا ويُخفى العنوان عن كل من لديه الرابط."
+
+msgid "Not yet"
+msgstr "ليس بعد"
+
+msgid "Yes, delivered"
+msgstr "نعم، تم التوصيل"
+
+msgid "Delivered. Thank you."
+msgstr "تم التوصيل. شكرًا لك."
+
+msgid ""
+"The link has expired and the address is no longer visible. You can close "
+"this page."
+msgstr "انتهت صلاحية الرابط ولم يعد العنوان ظاهرًا. يمكنك إغلاق هذه الصفحة."
+
+msgid "Landmark confirmed. Now find the door."
+msgstr "تم تأكيد المعلم. الآن ابحث عن الباب."
+
+msgid ""
+"Thanks, the sender will see that the landmark was wrong. Follow their own "
+"directions."
+msgstr "شكرًا، سيرى المرسِل أن المعلم كان خاطئًا. اتّبع إرشاداته الخاصة."
+
+msgid "At the landmark?"
+msgstr "هل وصلت إلى المعلم؟"
+
+msgid "Yes, I'm here"
+msgstr "نعم، أنا هنا"
+
+msgid "Landmark is wrong"
+msgstr "المعلم خاطئ"
+
+msgid "Lebanon, finally on the map"
+msgstr "لبنان، أخيرًا على الخريطة"
+
+msgid "Lebanon, finally on the map."
+msgstr "لبنان، أخيرًا على الخريطة."
+
+msgid ""
+"Turn the way people describe places into precise, shareable addresses. No "
+"street numbers needed."
+msgstr ""
+"حوّل طريقة وصف الناس للأماكن إلى عناوين دقيقة وقابلة للمشاركة. بلا حاجة إلى "
+"أرقام شوارع."
+
+msgid "Create your address card"
+msgstr "أنشئ بطاقة عنوانك"
+
+msgid "See how it works"
+msgstr "شاهد كيف يعمل"
+
+msgid "Understands Arabic, Arabizi and English. Free for households."
+msgstr "يفهم العربية والعربيزي والإنجليزية. مجاني للأسر."
+
+msgid "Try a real description"
+msgstr "جرّب وصفًا حقيقيًا"
+
+msgid "Examples"
+msgstr "أمثلة"
+
+msgid "Describe a place the way you would on WhatsApp"
+msgstr "صِف مكانًا كما تصفه على واتساب"
+
+msgid "Simulated resolver, Beirut sample landmarks"
+msgstr "تحديد موقع تجريبي، معالم نموذجية من بيروت"
+
+msgid "Also picked up"
+msgstr "التقط أيضًا"
+
+msgid ""
+"No known landmark in that description. In the app you can place the pin "
+"yourself."
+msgstr "لا يوجد معلم معروف في هذا الوصف. في التطبيق يمكنك وضع الدبوس بنفسك."
+
+msgid "Floor {n}"
+msgstr "الطابق {n}"
+
+msgid "{color} building"
+msgstr "مبنى {color}"
+
+msgid "In Lebanon, an address is a story."
+msgstr "في لبنان، العنوان قصة."
+
+msgid ""
+"People give directions with churches, bakeries, colours and turns. Maps "
+"expect street numbers. Wen reads the story and keeps every part of it."
+msgstr ""
+"يصف الناس الطريق بالكنائس والأفران والألوان والمنعطفات، والخرائط تنتظر أرقام"
+" شوارع. وين يقرأ القصة ويحتفظ بكل تفاصيلها."
+
+msgid "Turn"
+msgstr "منعطف"
+
+msgid "Building"
+msgstr "المبنى"
+
+msgid "Drivers call to ask."
+msgstr "السائقون يتصلون ليسألوا."
+
+msgid "Often two or three times for one order."
+msgstr "مرتين أو ثلاثًا في الطلب الواحد غالبًا."
+
+msgid "Pins miss the door."
+msgstr "الدبابيس لا تصيب الباب."
+
+msgid "They land on the main road, a block away from the entrance."
+msgstr "تقع على الطريق الرئيسي، على بُعد مبنى من المدخل."
+
+msgid "Voice notes repeat."
+msgstr "الرسائل الصوتية تتكرّر."
+
+msgid "The same directions, recorded again for every delivery."
+msgstr "الإرشادات نفسها، تُسجَّل من جديد لكل توصيلة."
+
+msgid "How Wen works"
+msgstr "كيف يعمل وين"
+
+msgid ""
+"Write or paste the directions you already send, in any mix of Arabic, "
+"Arabizi and English."
+msgstr ""
+"اكتب أو الصق الإرشادات التي ترسلها أصلًا، بأي مزيج من العربية والعربيزي "
+"والإنجليزية."
+
+msgid "Resolve"
+msgstr "حدّد"
+
+msgid ""
+"Wen finds the landmark you mentioned and shows it on the map. You confirm it"
+" or move the pin."
+msgstr ""
+"يجد وين المعلم الذي ذكرته ويعرضه على الخريطة. تؤكّده أنت أو تنقل الدبوس."
+
+msgid ""
+"Add entrance photos, the floor and a voice note, then send one private link."
+msgstr "أضف صور المدخل والطابق ورسالة صوتية، ثم أرسل رابطًا خاصًا واحدًا."
+
+msgid "Arrive"
+msgstr "الوصول"
+
+msgid ""
+"The driver navigates to the landmark, follows the photos to the door, and "
+"confirms delivery. The link expires."
+msgstr ""
+"يتوجّه السائق إلى المعلم، ويتبع الصور حتى الباب، ويؤكّد التوصيل. تنتهي "
+"صلاحية الرابط."
+
+msgid "Built for the last 150 metres"
+msgstr "مصمَّم لآخر 150 مترًا"
+
+msgid "Reads Lebanese directions"
+msgstr "يفهم الإرشادات اللبنانية"
+
+msgid ""
+"“Ba3d el kenise”, “بعد الكنيسة” and “after the church” point to the same "
+"place. Spelling variations are expected."
+msgstr ""
+"«Ba3d el kenise» و«بعد الكنيسة» و«after the church» تشير إلى المكان نفسه. "
+"اختلاف طرق الكتابة متوقَّع."
+
+msgid "Honest about uncertainty"
+msgstr "صريح عندما لا يكون متأكدًا"
+
+msgid ""
+"A suggested landmark is always labelled as a suggestion, with how well it "
+"matched. You decide what goes on the card."
+msgstr ""
+"يُعرض المعلم المقترح دائمًا كاقتراح، مع درجة التطابق. أنت تقرّر ما يظهر على "
+"البطاقة."
+
+msgid "From landmark to door"
+msgstr "من المعلم إلى الباب"
+
+msgid ""
+"Building colour, floor, entrance photos and a voice note cover the part no "
+"map can."
+msgstr ""
+"لون المبنى والطابق وصور المدخل ورسالة صوتية تغطّي ما لا تغطّيه أي خريطة."
+
+msgid "Links that expire"
+msgstr "روابط تنتهي صلاحيتها"
+
+msgid ""
+"Every card is private. A shared link stops working after delivery or on the "
+"date you pick."
+msgstr ""
+"كل بطاقة خاصة. يتوقّف الرابط المُشارَك عن العمل بعد التوصيل أو في التاريخ "
+"الذي تختاره."
+
+msgid "One card with everything the driver needs"
+msgstr "بطاقة واحدة فيها كل ما يحتاجه السائق"
+
+msgid "The driver opens the link on their phone. No app, no account, no call."
+msgstr "يفتح السائق الرابط على هاتفه. بلا تطبيق، بلا حساب، بلا اتصال."
+
+msgid "A meet point they can navigate to"
+msgstr "نقطة لقاء يمكنه التوجّه إليها"
+
+msgid "Your directions, in your own words"
+msgstr "إرشاداتك بكلماتك أنت"
+
+msgid "Building colour, entrance photos and floor"
+msgstr "لون المبنى وصور المدخل والطابق"
+
+msgid "A voice note for the final turn"
+msgstr "رسالة صوتية للمنعطف الأخير"
+
+msgid "One tap to open Google Maps"
+msgstr "ضغطة واحدة لفتح خرائط Google"
+
+msgid "For the people sending and the people delivering"
+msgstr "لمن يرسل العنوان ولمن يوصِل الطلب"
+
+msgid "Households"
+msgstr "الأسر"
+
+msgid "Describe your home once, reuse the card for every order"
+msgstr "صِف بيتك مرة واحدة، واستخدم البطاقة لكل طلب"
+
+msgid "Send guests a link instead of a voice note"
+msgstr "أرسل لضيوفك رابطًا بدل رسالة صوتية"
+
+msgid "Turn a link off whenever you want"
+msgstr "أوقف أي رابط متى شئت"
+
+msgid "Pharmacies, restaurants and couriers"
+msgstr "الصيدليات والمطاعم وشركات التوصيل"
+
+msgid ""
+"Paste a customer's WhatsApp directions and get a card in under two minutes"
+msgstr "الصق إرشادات الزبون من واتساب واحصل على بطاقة في أقل من دقيقتين"
+
+msgid "Driver mode built for a phone in one hand"
+msgstr "وضع سائق مصمَّم لهاتف في يد واحدة"
+
+msgid "See which deliveries were confirmed and how long they took"
+msgstr "اعرف أي عمليات التوصيل تأكّدت وكم استغرقت"
+
+msgid "Your home stays private"
+msgstr "بيتك يبقى خاصًا"
+
+msgid ""
+"A home location is sensitive. Wen is built so that only the people you "
+"choose can see it, and only for as long as they need to."
+msgstr ""
+"موقع البيت معلومة حساسة. صُمّم وين بحيث لا يراه إلا من تختارهم، وللمدة التي "
+"يحتاجونها فقط."
+
+msgid "Private by default"
+msgstr "خاص تلقائيًا"
+
+msgid "Cards are visible only to you until you create a link."
+msgstr "البطاقات ظاهرة لك وحدك إلى أن تنشئ رابطًا."
+
+msgid "No public directory"
+msgstr "لا دليل عام"
+
+msgid "Addresses can't be searched or browsed by anyone else."
+msgstr "لا يمكن لأي شخص آخر البحث في العناوين أو تصفّحها."
+
+msgid "Links that can't be guessed"
+msgstr "روابط لا يمكن تخمينها"
+
+msgid "Each link is a long random code, not your name or address."
+msgstr "كل رابط رمز عشوائي طويل، وليس اسمك أو عنوانك."
+
+msgid "Expiry you control"
+msgstr "صلاحية تتحكّم بها"
+
+msgid ""
+"Links expire on delivery, on the date you choose, or when you turn them off."
+msgstr ""
+"تنتهي صلاحية الروابط عند التوصيل، أو في التاريخ الذي تختاره، أو عندما "
+"توقفها."
+
+msgid "Describe your address once. Share it every time someone asks “wen?”"
+msgstr "صِف عنوانك مرة واحدة، وشاركه كلما سألك أحد «وين؟»"
+
+msgid "Create your free account"
+msgstr "أنشئ حسابك المجاني"
+
+msgid "Voice directions for the last 150 metres"
+msgstr "إرشادات صوتية لآخر 150 مترًا"
+
+msgid "Changing the description doesn't move the pin."
+msgstr "تغيير الوصف لا يحرّك الدبوس."
+
+msgid ""
+"The driver sees this name on the card. For example “Home, Mar Elias” or "
+"“Pharmacy, Jdeideh”."
+msgstr ""
+"يراه السائق على البطاقة. مثلًا «البيت، مار الياس» أو «الصيدلية، الجديدة»."
+
+msgid ""
+"What a stranger would notice: shop on the ground floor, balconies, gate, a "
+"sign."
+msgstr "ما يلاحظه الغريب: محل في الطابق الأرضي، شرفات، بوابة، لافتة."
+
+msgid ""
+"Which door, gate or bell. For example “Glass door left of the pharmacy, "
+"press 3B”."
+msgstr ""
+"أي باب أو بوابة أو جرس. مثلًا «الباب الزجاجي على يسار الصيدلية، اضغط 3B»."
+
+msgid ""
+"Step-by-step from the landmark to your door. If you leave this empty, the "
+"card shows your original description."
+msgstr ""
+"خطوة بخطوة من المعلم إلى بابك. إذا تركته فارغًا، تعرض البطاقة وصفك الأصلي."
+
+msgid "Current voice note"
+msgstr "الرسالة الصوتية الحالية"
+
+msgid "Play the sender's directions"
+msgstr "تشغيل إرشادات المرسِل"

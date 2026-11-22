@@ -1,0 +1,116 @@
+{% extends "wen/base.html" %}
+{% load i18n wen static %}
+{% block title %}{% translate "Driver mode" %} · Wen{% endblock %}
+{% block robots %}<meta name="robots" content="noindex, nofollow"><meta name="referrer" content="same-origin">{% endblock %}
+{% block body_class %}driver-shell{% endblock %}
+{% block map_css %}<link rel="stylesheet" href="{% static 'wen/vendor/leaflet/leaflet.css' %}">{% endblock %}
+{% block map_js %}<script src="{% static 'wen/vendor/leaflet/leaflet.js' %}" defer></script>{% endblock %}
+{% block body %}
+{% with lm=card.landmark %}
+<div class="driver" x-data="driverMode('{{ stage }}', '{{ landmark_state }}')" @landmark-checked.window="checked($event.detail)">
+  <header class="driver__bar">
+    <a class="btn btn--ghost btn--sm" href="{% url 'web:share_card' token %}">{% icon "arrow-left" %}<span>{% translate "Card" %}</span></a>
+    <span class="driver__mode">{% icon "truck" 18 %}{% translate "Driver mode" %}</span>
+    {% include "wen/components/lang_switch.html" %}
+  </header>
+
+  <div class="driver__map">
+    {{ map_data|json_script:"driver-map" }}
+    <div class="map" style="--map-h: 100%" x-data="pinMap('driver-map')">
+      <div class="map__canvas" x-ref="canvas" dir="ltr"></div>
+      <p class="map__fallback" x-show="failed" x-cloak>{% translate "The map couldn't load. Directions and photos are still below." %}</p>
+    </div>
+  </div>
+
+  <main id="content" class="driver__sheet">
+    <div class="segmented driver__tabs" role="tablist" aria-label="{% translate 'Delivery stages' %}">
+      <button type="button" role="tab" :aria-selected="(stage === 'landmark').toString()" :class="{ 'is-active': stage === 'landmark' }" @click="stage = 'landmark'"><span class="num">1</span>{% translate "Reach the landmark" %}</button>
+      <button type="button" role="tab" :aria-selected="(stage === 'entrance').toString()" :class="{ 'is-active': stage === 'entrance' }" @click="stage = 'entrance'"><span class="num">2</span>{% translate "Find the door" %}</button>
+    </div>
+
+    <section class="driver__stage" x-show="stage === 'landmark'" role="tabpanel">
+      <p class="driver__kicker">{% if lm %}{% translate "Drive to" %}{% else %}{% translate "Drive to the pin" %}{% endif %}</p>
+      <h1 class="driver__landmark">{% if lm %}{{ lm|lm_name }}{% else %}{% translate "Pin set by the sender" %}{% endif %}</h1>
+      {% if lm %}<p class="driver__sub"><bdi>{{ lm|lm_name_alt }}</bdi> · <bdi>{{ lm|lm_area }}</bdi></p>{% endif %}
+      {% if lm and card.match_quality != "strong" and card.pin.source == "landmark" %}
+        <div class="callout callout--caution">{% icon "triangle-alert" %}<div><strong>{% translate "Suggested landmark" %}</strong>{% translate "It may not be exact. Listen to the voice note or read the directions if it doesn't look right." %}</div></div>
+      {% endif %}
+      <a class="btn btn--primary btn--xl btn--block" href="https://www.google.com/maps/dir/?api=1&amp;destination={{ card.pin.lat|stringformat:'f' }},{{ card.pin.lng|stringformat:'f' }}&amp;travelmode=driving" target="_blank" rel="noopener noreferrer">{% icon "navigation" %}{% translate "Open navigation" %}</a>
+      <div id="landmark-check">{% include "wen/share/partials/landmark_check.html" %}</div>
+    </section>
+
+    <section class="driver__stage" x-show="stage === 'entrance'" x-cloak role="tabpanel">
+      <template x-if="landmarkState === 'rejected'">
+        <div class="callout callout--caution">{% icon "triangle-alert" %}<div><strong>{% translate "You reported the landmark as wrong" %}</strong>{% translate "Use the sender's own words and voice note below." %}</div></div>
+      </template>
+
+      {% if card.floor %}
+        <div class="driver__floor"><span>{% translate "Floor" %}</span><strong>{% if card.floor == "0" %}{% translate "Ground" %}{% else %}{{ card.floor }}{% endif %}</strong></div>
+      {% endif %}
+
+      {% if card.voice_note %}
+        {% url 'web:share_media' token card.voice_note.id as voice_src %}
+        {% include "wen/components/voice_player.html" with src=voice_src title=_("Play the sender's directions") %}
+      {% endif %}
+
+      <div class="driver__block">
+        <p class="driver__kicker">{% if card.directions %}{% translate "From the landmark" %}{% else %}{% translate "In the sender's words" %}{% endif %}</p>
+        <p class="driver__text" dir="auto">{% if card.directions %}{{ card.directions|linebreaksbr }}{% else %}{{ card.description|linebreaksbr }}{% endif %}</p>
+      </div>
+
+      {% if card.building_color or card.building_description %}
+        <div class="driver__block">
+          <p class="driver__kicker">{% translate "Look for" %}</p>
+          <p class="driver__text acard__building">
+            {% if card.building_color %}<span class="swatch__chip" style="background: {{ card.building_color|color_hex|default:'transparent' }}" aria-hidden="true"></span>{% endif %}
+            <span dir="auto">{% if card.building_color %}{% blocktranslate trimmed with color=card.building_color|color_label %}{{ color }} building{% endblocktranslate %}{% endif %}{% if card.building_color and card.building_description %}. {% endif %}{{ card.building_description }}</span>
+          </p>
+        </div>
+      {% endif %}
+
+      {% if card.photos %}
+        <div class="driver__block">
+          <p class="driver__kicker">{% translate "Entrance photos" %}</p>
+          <div class="gallery" x-data="lightbox">
+            {% for photo in card.photos %}
+              {% url 'web:share_media' token photo.id as src %}
+              <button type="button" class="gallery__item" @click="show('{{ src }}')" aria-label="{% blocktranslate with n=forloop.counter %}Open entrance photo {{ n }}{% endblocktranslate %}"><img src="{{ src }}" alt="{% blocktranslate with n=forloop.counter %}Entrance photo {{ n }}{% endblocktranslate %}" loading="lazy" decoding="async"></button>
+            {% endfor %}
+            <dialog class="lightbox" x-ref="dialog" @click="close()" @close="src = ''"><img :src="src" alt=""><button type="button" class="btn btn--icon lightbox__close" aria-label="{% translate 'Close photo' %}">{% icon "x" %}</button></dialog>
+          </div>
+        </div>
+      {% endif %}
+
+      {% if card.entrance_description %}
+        <div class="driver__block">
+          <p class="driver__kicker">{% translate "Entrance" %}</p>
+          <p class="driver__text" dir="auto">{{ card.entrance_description }}</p>
+        </div>
+      {% endif %}
+
+      {% if card.directions %}
+        <details class="acard__original"><summary>{% translate "Original description" %}</summary><p dir="auto">{{ card.description|linebreaksbr }}</p></details>
+      {% endif %}
+    </section>
+  </main>
+
+  <footer class="driver__dock" x-data="confirmDialog">
+    <button type="button" class="btn btn--go btn--xl btn--block" @click="open()">{% icon "circle-check" %}{% translate "Confirm delivery" %}</button>
+    <dialog class="dialog" x-ref="dialog" aria-labelledby="deliver-title">
+      <form method="post" action="{% url 'web:driver_delivered' token %}" x-data="{ busy: false }" @submit="busy = true">
+        {% csrf_token %}
+        <div class="dialog__body">
+          <span class="dialog__icon dialog__icon--go">{% icon "circle-check" %}</span>
+          <h3 id="deliver-title">{% translate "Confirm the delivery?" %}</h3>
+          <p class="muted">{% translate "The link expires straight away and the address is hidden from everyone who has it." %}</p>
+        </div>
+        <div class="dialog__actions">
+          <button type="button" class="btn btn--lg" @click="close()">{% translate "Not yet" %}</button>
+          <button type="submit" class="btn btn--go btn--lg" :class="{ 'is-loading': busy }">{% translate "Yes, delivered" %}</button>
+        </div>
+      </form>
+    </dialog>
+  </footer>
+</div>
+{% endwith %}
+{% endblock %}

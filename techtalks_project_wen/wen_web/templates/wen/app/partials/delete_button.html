@@ -1,0 +1,22 @@
+{% load i18n wen %}
+<span x-data="confirmDialog">
+  {% if compact %}
+    <button type="button" class="btn btn--sm btn--ghost btn--icon tile__delete" @click="open()" title="{% translate 'Delete' %}">{% icon "trash-2" 16 %}<span class="visually-hidden">{% translate "Delete" %}</span></button>
+  {% else %}
+    <button type="button" class="btn btn--danger-ghost" @click="open()">{% icon "trash-2" 16 %}{% translate "Delete" %}</button>
+  {% endif %}
+  <dialog class="dialog" x-ref="dialog" aria-labelledby="del-title-{{ card.id }}">
+    <form method="post" action="{% url 'web:address_delete' card.id %}">
+      {% csrf_token %}
+      <div class="dialog__body">
+        <span class="dialog__icon">{% icon "trash-2" %}</span>
+        <h3 id="del-title-{{ card.id }}">{% blocktranslate with title=card.title %}Delete “{{ title }}”?{% endblocktranslate %}</h3>
+        <p class="muted">{% translate "The card, its photos and voice note are removed. Any link you shared stops working. This can't be undone." %}</p>
+      </div>
+      <div class="dialog__actions">
+        <button type="button" class="btn" @click="close()">{% translate "Cancel" %}</button>
+        <button type="submit" class="btn btn--danger">{% translate "Delete address" %}</button>
+      </div>
+    </form>
+  </dialog>
+</span>

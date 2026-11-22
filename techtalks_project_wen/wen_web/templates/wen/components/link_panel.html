@@ -1,0 +1,82 @@
+{% load i18n wen humanize %}{% comment %}Owner-side share link controls. Swapped in place by HTMX.{% endcomment %}
+<section class="card link-panel" id="link-panel" aria-labelledby="link-panel-title">
+  {% with state=card|link_state:now %}
+  <div class="card__header">
+    <h2 class="card__title" id="link-panel-title">{% translate "Private link" %}</h2>
+    {% if state == "active" %}<span class="badge badge--go badge--dot">{% translate "Active" %}</span>
+    {% elif state == "delivered" %}<span class="badge badge--sea badge--dot">{% translate "Delivered" %}</span>
+    {% elif state == "expired" %}<span class="badge badge--dot">{% translate "Expired" %}</span>
+    {% elif state == "revoked" %}<span class="badge badge--dot">{% translate "Turned off" %}</span>
+    {% else %}<span class="badge badge--outline">{% translate "No link yet" %}</span>{% endif %}
+  </div>
+  <div class="card__body stack">
+    {% if state == "active" %}
+      {% url 'web:share_card' card.link.token as share_path %}
+      {% with share_url=request.scheme|add:"://"|add:request.get_host|add:share_path %}
+      <div class="copy-field" x-data="copyLink('{{ share_url }}')">
+        <input class="copy-field__value" value="{{ share_url }}" readonly aria-label="{% translate 'Private link' %}" @focus="$el.select()">
+        <button type="button" class="btn btn--sm" @click="copy()">
+          <span x-show="!copied">{% icon "copy" 16 %}</span><span x-show="copied" x-cloak>{% icon "check" 16 %}</span>
+          <span x-text="copied ? '{% translate "Copied" %}' : '{% translate "Copy" %}'">{% translate "Copy" %}</span>
+        </button>
+      </div>
+      <p class="text-sm muted icon-line">{% icon "clock" 15 %}<span>
+        {% blocktranslate trimmed with when=card.link.expires_at|naturaltime date=card.link.expires_at|date:"j M, H:i" %}
+          Expires {{ when }} ({{ date }}), or as soon as the driver confirms delivery.
+        {% endblocktranslate %}</span>
+      </p>
+      <div class="cluster cluster--tight" x-data="shareLink('{{ share_url }}', '{{ card.title|escapejs }}')">
+        <button type="button" class="btn btn--accent" @click="share()" x-show="canShare" x-cloak>{% icon "share-2" %}{% translate "Share" %}</button>
+        <a class="btn" :href="whatsapp" target="_blank" rel="noopener noreferrer">{% icon "send" %}{% translate "Send on WhatsApp" %}</a>
+        <a class="btn" href="{{ share_path }}" target="_blank" rel="noopener">{% icon "eye" %}{% translate "Open as driver" %}</a>
+      </div>
+      {% endwith %}
+      <div class="link-panel__manage cluster cluster--tight">
+        <form hx-post="{% url 'web:link_issue' card.id %}" hx-target="#link-panel" hx-swap="outerHTML" method="post" action="{% url 'web:link_issue' card.id %}">
+          {% csrf_token %}<input type="hidden" name="lifetime" value="{{ link_form.lifetime.value|default:168 }}">
+          <button class="link-btn" type="submit">{% icon "rotate-ccw" 16 %}{% translate "Replace link" %}</button>
+        </form>
+        <div x-data="confirmDialog">
+          <button class="link-btn link-btn--danger" type="button" @click="open()">{% icon "link-2-off" 16 %}{% translate "Turn off link" %}</button>
+          <dialog class="dialog" x-ref="dialog" aria-labelledby="revoke-title-{{ card.id }}">
+            <form class="dialog__body" method="post" action="{% url 'web:link_revoke' card.id %}" id="revoke-form-{{ card.id }}"
+                  hx-post="{% url 'web:link_revoke' card.id %}" hx-target="#link-panel" hx-swap="outerHTML">
+              {% csrf_token %}
+              <span class="dialog__icon">{% icon "link-2-off" %}</span>
+              <h3 id="revoke-title-{{ card.id }}">{% translate "Turn off this link?" %}</h3>
+              <p class="muted">{% translate "Anyone who has the link will see that it no longer works. You can create a new link at any time." %}</p>
+            </form>
+            <div class="dialog__actions">
+              <button type="button" class="btn" @click="close()">{% translate "Keep link" %}</button>
+              <button type="submit" class="btn btn--danger" form="revoke-form-{{ card.id }}" @click="close()">{% translate "Turn off link" %}</button>
+            </div>
+          </dialog>
+        </div>
+      </div>
+    {% else %}
+      {% if state == "delivered" %}
+        <p class="text-sm">{% blocktranslate trimmed with when=card.link.delivered_at|naturaltime %}Delivered {{ when }}. The link expired when the driver confirmed delivery.{% endblocktranslate %}</p>
+      {% elif state == "expired" %}
+        <p class="text-sm">{% blocktranslate trimmed with when=card.link.expires_at|naturaltime %}The last link expired {{ when }}.{% endblocktranslate %}</p>
+      {% elif state == "revoked" %}
+        <p class="text-sm">{% translate "You turned off the last link. It no longer opens the card." %}</p>
+      {% else %}
+        <p class="text-sm muted">{% translate "Create a private link to send this card to a driver or a guest. Only people with the link can open it." %}</p>
+      {% endif %}
+      <form class="link-panel__create" method="post" action="{% url 'web:link_issue' card.id %}"
+            hx-post="{% url 'web:link_issue' card.id %}" hx-target="#link-panel" hx-swap="outerHTML" x-data="{ busy: false }" @submit="busy = true">
+        {% csrf_token %}
+        <div class="field">
+          <label class="field__label" for="lifetime-{{ card.id }}">{% translate "Link expires after" %}</label>
+          <select class="select" name="lifetime" id="lifetime-{{ card.id }}">
+            {% for value, label in link_form.fields.lifetime.choices %}
+              <option value="{{ value }}" {% if value|stringformat:"s" == link_form.lifetime.value|stringformat:"s" %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button class="btn btn--primary" type="submit" :class="{ 'is-loading': busy }">{% icon "link" %}{% if state == "none" %}{% translate "Create private link" %}{% else %}{% translate "Create a new link" %}{% endif %}</button>
+      </form>
+    {% endif %}
+  </div>
+  {% endwith %}
+</section>
