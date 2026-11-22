@@ -1,0 +1,17 @@
+{% load i18n wen %}
+<div class="landmark-check" {% if landmark_state and landmark_state != "pending" %}x-init="$dispatch('landmark-checked', '{{ landmark_state }}')"{% endif %}>
+  {% if landmark_state == "confirmed" %}
+    <p class="landmark-check__done is-go">{% icon "circle-check" %}{% translate "Landmark confirmed. Now find the door." %}</p>
+  {% elif landmark_state == "rejected" %}
+    <p class="landmark-check__done is-caution">{% icon "triangle-alert" %}{% translate "Thanks, the sender will see that the landmark was wrong. Follow their own directions." %}</p>
+  {% elif error %}
+    <p class="field__error">{% icon "triangle-alert" 15 %}{% translate "Something went wrong. Check your connection and try again." %}</p>
+  {% else %}
+    <p class="driver__kicker">{% translate "At the landmark?" %}</p>
+    <form class="landmark-check__actions" method="post" action="{% url 'web:driver_landmark' token %}" hx-post="{% url 'web:driver_landmark' token %}" hx-target="#landmark-check" hx-swap="innerHTML">
+      {% csrf_token %}
+      <button class="btn btn--lg" type="submit" name="verdict" value="confirmed">{% icon "check" %}{% translate "Yes, I'm here" %}</button>
+      <button class="btn btn--lg btn--ghost" type="submit" name="verdict" value="rejected">{% icon "x" %}{% translate "Landmark is wrong" %}</button>
+    </form>
+  {% endif %}
+</div>

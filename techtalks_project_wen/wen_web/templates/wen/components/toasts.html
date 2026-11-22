@@ -1,0 +1,15 @@
+{% load i18n wen %}
+<div class="toasts" x-data="toaster" aria-live="polite" aria-atomic="false">
+  {% for message in messages %}
+    <template data-initial-toast data-level="{{ message.tags|default:'info' }}">{{ message }}</template>
+  {% endfor %}
+  <template x-for="t in $store.toasts.items" :key="t.id">
+    <div class="toast" :class="'toast--' + t.level" role="status">
+      <span x-show="t.level === 'success'">{% icon "circle-check" %}</span>
+      <span x-show="t.level === 'error'">{% icon "triangle-alert" %}</span>
+      <span x-show="t.level !== 'success' && t.level !== 'error'">{% icon "info" %}</span>
+      <span x-text="t.text"></span>
+      <button type="button" class="toast__close" @click="$store.toasts.dismiss(t.id)" aria-label="{% translate 'Dismiss' %}">{% icon "x" 18 %}</button>
+    </div>
+  </template>
+</div>

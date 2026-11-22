@@ -1,0 +1,16 @@
+{% load i18n wen humanize %}{% with state=card|link_state:now %}
+<a class="addr-row" href="{% url 'web:address_detail' card.id %}">
+  <span class="addr-row__pin {% if state == 'active' %}is-live{% endif %}">{% icon "map-pin" 18 %}</span>
+  <span class="addr-row__main">
+    <span class="addr-row__title" dir="auto">{{ card.title }}</span>
+    <span class="addr-row__meta">{% if card.landmark %}{{ card.landmark|lm_name }}{% else %}{% translate "Pin on map" %}{% endif %}{% if card.floor %} · {{ card.floor|floor_label }}{% endif %}</span>
+  </span>
+  <span class="addr-row__side">
+    {% if state == "active" %}<span class="badge badge--go badge--dot">{% translate "Link active" %}</span>
+    {% elif state == "delivered" %}<span class="badge badge--sea badge--dot">{% translate "Delivered" %}</span>
+    {% elif state == "expired" or state == "revoked" %}<span class="badge badge--dot">{% translate "Link ended" %}</span>
+    {% else %}<span class="badge badge--outline">{% translate "Not shared" %}</span>{% endif %}
+    <time class="addr-row__time" datetime="{{ card.last_used_at|date:'c' }}">{{ card.last_used_at|naturaltime }}</time>
+  </span>
+</a>
+{% endwith %}

@@ -1,0 +1,59 @@
+{% load i18n wen humanize %}
+<div id="results" class="results">
+  {% if not total %}
+    <section class="empty">
+      {% include "wen/components/empty_art.html" %}
+      <h3>{% translate "No saved addresses yet" %}</h3>
+      <p>{% translate "Every address card you create is saved here, ready to share again." %}</p>
+      <a class="btn btn--primary" href="{% url 'web:address_create' %}">{% icon "plus" %}{% translate "Create an address card" %}</a>
+    </section>
+  {% elif not cards %}
+    <section class="empty empty--compact">
+      <h3>{% translate "Nothing matches" %}</h3>
+      <p>{% translate "Try another word, or show all addresses." %}</p>
+      <a class="btn" href="{% url 'web:addresses' %}">{% translate "Clear filters" %}</a>
+    </section>
+  {% else %}
+    <p class="results__count text-sm muted" role="status">{% blocktranslate count n=cards|length %}{{ n }} address{% plural %}{{ n }} addresses{% endblocktranslate %}</p>
+    <ul class="tiles">
+      {% for card in cards %}
+      {% with state=card|link_state:now %}
+      <li class="tile">
+        <a class="tile__link" href="{% url 'web:address_detail' card.id %}">
+          <span class="tile__top">
+            {% if state == "active" %}<span class="badge badge--go badge--dot">{% translate "Link active" %}</span>
+            {% elif state == "delivered" %}<span class="badge badge--sea badge--dot">{% translate "Delivered" %}</span>
+            {% elif state == "expired" or state == "revoked" %}<span class="badge badge--dot">{% translate "Link ended" %}</span>
+            {% else %}<span class="badge badge--outline">{% translate "Not shared" %}</span>{% endif %}
+          </span>
+          <span class="tile__title" dir="auto">{{ card.title }}</span>
+          <span class="tile__landmark">{% icon "map-pin" 16 %}{% if card.landmark %}{{ card.landmark|lm_name }}{% else %}{% translate "Pin on map" %}{% endif %}</span>
+          <span class="tile__facts">
+            {% if card.building_color %}<span class="tile__fact"><span class="swatch__chip swatch__chip--sm" style="background: {{ card.building_color|color_hex|default:'transparent' }}"></span>{{ card.building_color|color_label }}</span>{% endif %}
+            {% if card.floor %}<span class="tile__fact">{% icon "layers" 15 %}{{ card.floor|floor_label }}</span>{% endif %}
+            {% if card.photos %}<span class="tile__fact">{% icon "camera" 15 %}{{ card.photos|length }}</span>{% endif %}
+            {% if card.voice_note %}<span class="tile__fact">{% icon "mic" 15 %}{% translate "Voice" %}</span>{% endif %}
+          </span>
+          <span class="tile__time text-xs subtle">{% blocktranslate with when=card.last_used_at|naturaltime %}Used {{ when }}{% endblocktranslate %}</span>
+        </a>
+        <div class="tile__actions">
+          {% if state == "active" %}
+            {% url 'web:share_card' card.link.token as share_path %}
+            <span x-data="copyLink('{{ request.scheme }}://{{ request.get_host }}{{ share_path }}')">
+              <button type="button" class="btn btn--sm btn--ghost" @click="copy()">{% icon "copy" 16 %}<span x-text="copied ? '{% translate "Copied" %}' : '{% translate "Copy link" %}'">{% translate "Copy link" %}</span></button>
+            </span>
+            <span x-data="shareLink('{{ request.scheme }}://{{ request.get_host }}{{ share_path }}', '{{ card.title|escapejs }}')">
+              <a class="btn btn--sm btn--ghost" :href="whatsapp" target="_blank" rel="noopener noreferrer">{% icon "send" 16 %}{% translate "Share" %}</a>
+            </span>
+          {% else %}
+            <a class="btn btn--sm btn--ghost" href="{% url 'web:address_detail' card.id %}#link-panel">{% icon "link" 16 %}{% translate "Create link" %}</a>
+          {% endif %}
+          <a class="btn btn--sm btn--ghost" href="{% url 'web:address_edit' card.id %}">{% icon "pencil" 16 %}{% translate "Edit" %}</a>
+          {% include "wen/app/partials/delete_button.html" with compact=True %}
+        </div>
+      </li>
+      {% endwith %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+</div>

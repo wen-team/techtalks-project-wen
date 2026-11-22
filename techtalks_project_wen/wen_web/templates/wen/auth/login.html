@@ -1,0 +1,21 @@
+{% extends "wen/layouts/auth.html" %}
+{% load i18n wen %}
+{% block title %}{% translate "Log in" %} · Wen{% endblock %}
+{% block content %}
+<form class="auth__form" method="post" novalidate x-data="{ busy: false }" @submit="busy = true">
+  {% csrf_token %}
+  <div class="stack stack-sm">
+    <h1>{% translate "Welcome back" %}</h1>
+    <p class="muted">{% translate "Log in to manage your address cards and links." %}</p>
+  </div>
+  {% if form.non_field_errors %}<div class="form-errors" role="alert">{% icon "triangle-alert" %}<div>{% for e in form.non_field_errors %}<p>{{ e }}</p>{% endfor %}</div></div>{% endif %}
+  {% include "wen/components/field.html" with field=form.username hide_optional=True %}
+  <div class="stack stack-sm">
+    {% include "wen/components/field.html" with field=form.password password=True hide_optional=True %}
+    <a class="text-sm" href="{% url 'web:password_reset' %}">{% translate "Forgot your password?" %}</a>
+  </div>
+  <input type="hidden" name="next" value="{{ next }}">
+  <button class="btn btn--primary btn--lg btn--block" type="submit" :class="{ 'is-loading': busy }">{% translate "Log in" %}</button>
+  <p class="auth__foot">{% translate "New to Wen?" %} <a href="{% url 'web:register' %}">{% translate "Create an account" %}</a></p>
+</form>
+{% endblock %}

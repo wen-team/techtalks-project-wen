@@ -1,0 +1,9 @@
+{% load i18n wen %}
+<a class="menu__item" role="menuitem" href="/">{% icon "house" 18 %}{% translate "Wen home page" %}</a>
+<a class="menu__item" role="menuitem" href="{% url 'web:password_reset' %}">{% icon "key-round" 18 %}{% translate "Change password" %}</a>
+{% if wen_simulated and mobile %}<p class="menu__meta"><span class="dev-note">{% icon "flag" %}{% translate "Development data" %}</span></p>{% endif %}
+<div class="menu__sep"></div>
+<form action="{% url 'web:logout' %}" method="post">
+  {% csrf_token %}
+  <button class="menu__item menu__item--danger" role="menuitem" type="submit">{% icon "log-out" 18 %}{% translate "Log out" %}</button>
+</form>

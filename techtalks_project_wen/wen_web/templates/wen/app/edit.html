@@ -1,0 +1,54 @@
+{% extends "wen/layouts/app.html" %}
+{% load i18n wen static %}
+{% block title %}{% translate "Edit" %} · {{ card.title }} · Wen{% endblock %}
+{% block map_css %}<link rel="stylesheet" href="{% static 'wen/vendor/leaflet/leaflet.css' %}">{% endblock %}
+{% block map_js %}<script src="{% static 'wen/vendor/leaflet/leaflet.js' %}" defer></script>{% endblock %}
+{% block content %}
+{{ map_data|json_script:"edit-map" }}
+<form class="flow" method="post" enctype="multipart/form-data" novalidate x-data="editPin('edit-map')" @submit="submitting = true">
+  {% csrf_token %}
+  <div class="page-head">
+    <div>
+      <nav class="crumbs" aria-label="{% translate 'Breadcrumb' %}"><a href="{% url 'web:addresses' %}">{% translate "Saved addresses" %}</a>{% icon "chevron-right" %}<a href="{% url 'web:address_detail' card.id %}" dir="auto">{{ card.title }}</a>{% icon "chevron-right" %}<span>{% translate "Edit" %}</span></nav>
+      <h1>{% translate "Edit address card" %}</h1>
+    </div>
+  </div>
+  {% if form.pin_lat.errors or form.pin_lng.errors or form.pin_source.errors %}<div class="form-errors" role="alert">{% icon "triangle-alert" %}<p>{% translate "The pin position was missing. Check the pin on the map and save again." %}</p></div>{% endif %}
+  {% if form.non_field_errors %}<div class="form-errors" role="alert">{% icon "triangle-alert" %}<div>{% for e in form.non_field_errors %}<p>{{ e }}</p>{% endfor %}</div></div>{% endif %}
+
+  <input type="hidden" name="landmark_id" value="{{ form.landmark_id.value|default:'' }}">
+  <input type="hidden" name="match_quality" value="{{ form.match_quality.value|default:'' }}">
+  <input type="hidden" name="language" value="{{ form.language.value|default:'' }}">
+  <input type="hidden" name="pin_lat" value="{{ card.pin.lat|stringformat:'f' }}" :value="pin.lat">
+  <input type="hidden" name="pin_lng" value="{{ card.pin.lng|stringformat:'f' }}" :value="pin.lng">
+  <input type="hidden" name="pin_source" value="{{ card.pin.source }}" :value="pin.source">
+
+  <section class="card">
+    <div class="card__header"><h2 class="card__title">{% translate "Pin and description" %}</h2></div>
+    <div class="card__body stack">
+      <div class="map" style="--map-h: 300px">
+        <div class="map__canvas" x-ref="map" dir="ltr"></div>
+        <div class="map__hint"><span class="map__chip">{% icon "map-pin" %}{% translate "Drag the pin to move it" %}</span></div>
+        <p class="map__fallback" x-show="mapFailed" x-cloak>{% translate "The map couldn't load. Directions and photos are still below." %}</p>
+      </div>
+      <div class="cluster cluster--between">
+        <p class="text-sm muted">
+          {% if card.landmark %}{% blocktranslate with name=card.landmark|lm_name %}Landmark: {{ name }}{% endblocktranslate %}{% endif %}
+          <span x-show="pin.source !== 'landmark'">· {% translate "Pin moved by you" %}</span>
+        </p>
+        {% if card.landmark %}<button type="button" class="link-btn text-sm" x-show="pin.source !== 'landmark'" @click="resetToLandmark()">{% icon "rotate-ccw" 15 %}{% translate "Put the pin back on the landmark" %}</button>{% endif %}
+      </div>
+      {% include "wen/components/field.html" with field=form.description hide_optional=True hint=_("Changing the description doesn't move the pin.") %}
+    </div>
+  </section>
+
+  <section class="card"><div class="card__body">
+    {% include "wen/app/partials/details_fields.html" %}
+  </div></section>
+
+  <div class="flow__actions">
+    <a class="btn btn--ghost" href="{% url 'web:address_detail' card.id %}">{% translate "Cancel" %}</a>
+    <button type="submit" class="btn btn--primary btn--lg" :class="{ 'is-loading': submitting }">{% translate "Save changes" %}</button>
+  </div>
+</form>
+{% endblock %}

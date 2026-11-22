@@ -1,0 +1,8 @@
+{% extends "wen/layouts/share.html" %}
+{% load i18n wen static %}
+{% block title %}{{ card.title }} · Wen{% endblock %}
+{% block map_css %}<link rel="stylesheet" href="{% static 'wen/vendor/leaflet/leaflet.css' %}">{% endblock %}
+{% block map_js %}<script src="{% static 'wen/vendor/leaflet/leaflet.js' %}" defer></script>{% endblock %}
+{% block content %}
+  {% include "wen/components/address_card.html" with map_id="card-map" mode="share" map_height="260px" %}
+{% endblock %}

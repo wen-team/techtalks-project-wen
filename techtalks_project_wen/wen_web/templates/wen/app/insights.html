@@ -1,0 +1,55 @@
+{% extends "wen/layouts/app.html" %}
+{% load i18n wen humanize %}
+{% block title %}{% translate "Delivery insights" %} · Wen{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>{% translate "Delivery insights" %}</h1>
+    <p>{% translate "For businesses that deliver. Every number here comes from links you created and what drivers did with them." %}</p>
+  </div>
+</div>
+
+<section class="stats" aria-label="{% translate 'Summary' %}">
+  <div class="stat"><span class="stat__value">{{ stats.deliveries }}</span><span class="stat__label">{% translate "Confirmed deliveries" %}</span></div>
+  <div class="stat"><span class="stat__value">{{ stats.link_opens }}</span><span class="stat__label">{% translate "Link opens" %}</span></div>
+  <div class="stat">
+    <span class="stat__value">{% if landmark_rate is not None %}{{ landmark_rate }}%{% else %}–{% endif %}</span>
+    <span class="stat__label">{% translate "Landmarks confirmed by drivers" %}</span>
+    <span class="stat__note">{% blocktranslate count n=landmark_checks %}{{ n }} check{% plural %}{{ n }} checks{% endblocktranslate %}</span>
+  </div>
+  <div class="stat">
+    <span class="stat__value">{% if median_minutes is not None %}{{ median_minutes }}<small> {% translate "min" %}</small>{% else %}–{% endif %}</span>
+    <span class="stat__label">{% translate "Median time, link opened to delivered" %}</span>
+  </div>
+</section>
+
+<div class="callout insights__note">{% icon "info" %}<div><strong>{% translate "Calls saved aren't measured yet" %}</strong>{% translate "Wen doesn't record phone calls, so it can't tell you how many calls a card saved. Once drivers can report calls in driver mode, that number will appear here." %}</div></div>
+
+<section class="card">
+  <div class="card__header"><h2 class="card__title">{% translate "Recent deliveries" %}</h2></div>
+  <div class="card__body">
+    {% if deliveries %}
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th scope="col">{% translate "Address" %}</th><th scope="col">{% translate "Link opened" %}</th><th scope="col">{% translate "Delivered" %}</th><th scope="col">{% translate "Time to door" %}</th></tr></thead>
+          <tbody>
+            {% for d in deliveries %}
+              <tr>
+                <td><a href="{% url 'web:address_detail' d.card.id %}" dir="auto">{{ d.card.title }}</a></td>
+                <td>{% if d.opened %}{{ d.opened|date:"j M, H:i" }}{% else %}<span class="subtle">{% translate "Not recorded" %}</span>{% endif %}</td>
+                <td>{{ d.delivered|date:"j M, H:i" }}</td>
+                <td class="num">{% if d.minutes is not None %}{% blocktranslate with m=d.minutes %}{{ m }} min{% endblocktranslate %}{% else %}–{% endif %}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="empty empty--compact">
+        <h3>{% translate "No confirmed deliveries yet" %}</h3>
+        <p>{% translate "When a driver taps “Confirm delivery” in driver mode, it shows up here." %}</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

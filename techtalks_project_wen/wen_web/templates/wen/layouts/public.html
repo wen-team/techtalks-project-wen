@@ -1,0 +1,78 @@
+{% extends "wen/base.html" %}
+{% load i18n wen %}
+{% block body %}
+<header class="site-header" x-data="siteHeader" :class="{ 'is-scrolled': scrolled }">
+  <div class="container">
+    <div class="site-header__inner">
+      {% include "wen/components/logo.html" with href="/" %}
+      <nav class="site-nav" aria-label="{% translate 'Main' %}">
+        <a href="/#how">{% translate "How it works" %}</a>
+        <a href="/#card">{% translate "Address card" %}</a>
+        <a href="/#business">{% translate "For businesses" %}</a>
+        <a href="/#privacy">{% translate "Privacy" %}</a>
+      </nav>
+      <div class="site-header__actions">
+        <span class="hide-small">{% include "wen/components/lang_switch.html" %}</span>
+        {% if user.is_authenticated %}
+          <a class="btn btn--primary btn--sm" href="{% url 'web:dashboard' %}">{% translate "Open dashboard" %}</a>
+        {% else %}
+          <a class="btn btn--ghost btn--sm hide-mobile" href="{% url 'web:login' %}">{% translate "Log in" %}</a>
+          <a class="btn btn--primary btn--sm" href="{% url 'web:register' %}">{% translate "Get started" %}</a>
+        {% endif %}
+        <button class="btn btn--ghost btn--icon btn--sm site-menu-btn" type="button" @click="open = !open"
+                :aria-expanded="open.toString()" aria-controls="mobile-nav" aria-label="{% translate 'Menu' %}">{% icon "menu" %}</button>
+      </div>
+    </div>
+    <nav id="mobile-nav" class="site-mobile-nav" x-show="open" x-cloak @click="open = false" aria-label="{% translate 'Main' %}">
+      <a href="/#how">{% translate "How it works" %}</a>
+      <a href="/#card">{% translate "Address card" %}</a>
+      <a href="/#business">{% translate "For businesses" %}</a>
+      <a href="/#privacy">{% translate "Privacy" %}</a>
+      {% if not user.is_authenticated %}<a href="{% url 'web:login' %}">{% translate "Log in" %}</a>{% endif %}
+      <div class="site-mobile-nav__lang" @click.stop>{% include "wen/components/lang_switch.html" %}</div>
+    </nav>
+  </div>
+</header>
+<main id="content">{% block content %}{% endblock %}</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__brand stack">
+        {% include "wen/components/logo.html" with light=True href="/" %}
+        <p>{% translate "Addresses the way Lebanon gives them: landmarks, turns, colours and floors, turned into a card anyone can follow." %}</p>
+      </div>
+      <div>
+        <h3>{% translate "Product" %}</h3>
+        <ul>
+          <li><a href="/#how">{% translate "How it works" %}</a></li>
+          <li><a href="/#card">{% translate "Address card" %}</a></li>
+          <li><a href="/#business">{% translate "For businesses" %}</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>{% translate "Account" %}</h3>
+        <ul>
+          {% if user.is_authenticated %}
+            <li><a href="{% url 'web:dashboard' %}">{% translate "Dashboard" %}</a></li>
+            <li><a href="{% url 'web:addresses' %}">{% translate "Saved addresses" %}</a></li>
+          {% else %}
+            <li><a href="{% url 'web:register' %}">{% translate "Create an account" %}</a></li>
+            <li><a href="{% url 'web:login' %}">{% translate "Log in" %}</a></li>
+            <li><a href="{% url 'web:password_reset' %}">{% translate "Reset password" %}</a></li>
+          {% endif %}
+        </ul>
+      </div>
+      <div>
+        <h3>{% translate "Trust" %}</h3>
+        <ul>
+          <li><a href="/#privacy">{% translate "Privacy principles" %}</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="site-footer__base">
+      <span>{% translate "Wen, a TechTalks internship project, Beirut." %}</span>
+      {% include "wen/components/lang_switch.html" with dark=True %}
+    </div>
+  </div>
+</footer>
+{% endblock %}

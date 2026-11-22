@@ -220,3 +220,9 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
+
+# Wen frontend: uploaded dev media + collected static
+techtalks_project_wen/media/
+techtalks_project_wen/staticfiles/
+# Compiled Arabic translations are committed on purpose
+!techtalks_project_wen/wen_web/locale/*/LC_MESSAGES/*.mo

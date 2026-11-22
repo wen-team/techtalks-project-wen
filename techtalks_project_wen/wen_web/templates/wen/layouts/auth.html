@@ -1,0 +1,29 @@
+{% extends "wen/base.html" %}
+{% load i18n wen %}
+{% block body %}
+<div class="auth">
+  <aside class="auth__aside" aria-hidden="true">
+    <svg class="auth__aside-art" viewBox="0 0 600 900" preserveAspectRatio="xMidYMid slice">
+      <g fill="none" stroke="#2c445e" stroke-width="1">
+        <path d="M-20 160 C120 140 180 220 300 210 S520 120 640 170"/><path d="M-20 300 C90 330 210 260 320 300 S500 380 640 340"/>
+        <path d="M-20 470 C140 430 230 520 340 500 S540 430 640 470"/><path d="M-20 640 C100 600 220 690 330 660 S520 590 640 640"/>
+        <path d="M120 -20 C140 140 90 300 150 460 S130 760 160 920"/><path d="M380 -20 C360 160 420 330 380 520 S430 760 400 920"/>
+      </g>
+      <path d="M150 460 C230 470 280 420 330 410 S400 360 380 300" fill="none" stroke="#13869f" stroke-width="3" stroke-dasharray="2 9" stroke-linecap="round"/>
+      <circle cx="150" cy="460" r="7" fill="#13869f"/><circle cx="380" cy="300" r="11" fill="#fff"/><circle cx="380" cy="300" r="5" fill="#10243a"/>
+    </svg>
+    {% include "wen/components/logo.html" with light=True href="/" %}
+    <p class="auth__quote">“{% translate "Where exactly?" %}”<span>{% translate "The question every driver in Lebanon asks. Wen answers it before they have to call." %}</span></p>
+    <p class="text-sm">{% translate "Private address cards. Links that expire." %}</p>
+  </aside>
+  <div class="auth__main">
+    <div class="auth__top">
+      <span class="auth__mobile-logo">{% include "wen/components/logo.html" with href="/" %}</span>
+      {% include "wen/components/lang_switch.html" %}
+    </div>
+    <main id="content" class="auth__form-wrap">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% load i18n wen %}
+<div class="voice" x-data="voicePlayer('{{ src }}')">
+  <audio x-ref="audio" preload="metadata" src="{{ src }}"></audio>
+  <button type="button" class="voice__play" @click="toggle()" :aria-label="playing ? '{% translate "Pause voice note" %}' : '{% translate "Play voice note" %}'">
+    <span x-show="!playing">{% icon "play" %}</span><span x-show="playing" x-cloak>{% icon "pause" %}</span>
+  </button>
+  <div class="voice__main">
+    <span class="voice__title">{{ title|default:_("Voice note") }}</span>
+    <div class="voice__track" @click="seek($event)" role="slider" aria-label="{% translate 'Playback position' %}" :aria-valuenow="Math.round(progress)" aria-valuemin="0" aria-valuemax="100" tabindex="0" @keydown.right.prevent="skip(5)" @keydown.left.prevent="skip(-5)">
+      <span class="voice__fill" :style="`width: ${progress}%`"></span>
+    </div>
+  </div>
+  <span class="voice__time" x-text="label">0:00</span>
+</div>

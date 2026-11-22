@@ -1,0 +1,10 @@
+{% extends "wen/layouts/share.html" %}
+{% load i18n wen %}
+{% block title %}{% translate "Delivered" %} · Wen{% endblock %}
+{% block content %}
+<section class="status-page">
+  <span class="status-page__icon is-go status-page__icon--pop">{% icon "circle-check" 32 %}</span>
+  <h1>{% translate "Delivered. Thank you." %}</h1>
+  <p>{% translate "The link has expired and the address is no longer visible. You can close this page." %}</p>
+</section>
+{% endblock %}

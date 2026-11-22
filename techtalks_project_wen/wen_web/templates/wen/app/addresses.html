@@ -1,0 +1,41 @@
+{% extends "wen/layouts/app.html" %}
+{% load i18n wen %}
+{% block title %}{% translate "Saved addresses" %} · Wen{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>{% translate "Saved addresses" %}</h1>
+    <p>{% translate "Only you can see this list. Drivers only see a card when you send them its link." %}</p>
+  </div>
+  <a class="btn btn--primary" href="{% url 'web:address_create' %}">{% icon "plus" %}{% translate "New address" %}</a>
+</div>
+
+{% if total %}
+<form class="toolbar" method="get" action="{% url 'web:addresses' %}" role="search"
+      hx-get="{% url 'web:addresses' %}" hx-target="#results" hx-swap="outerHTML" hx-push-url="true"
+      hx-trigger="input changed delay:300ms from:#search, change, submit">
+  <div class="input-icon toolbar__search">
+    {% icon "search" %}
+    <label class="visually-hidden" for="search">{% translate "Search addresses" %}</label>
+    <input class="input" type="search" id="search" name="q" value="{{ q }}" placeholder="{% translate 'Search by name, landmark or floor' %}" autocomplete="off" dir="auto">
+  </div>
+  <div class="segmented" role="radiogroup" aria-label="{% translate 'Filter by link' %}">
+    <label><input type="radio" name="status" value="all" {% if status == "all" %}checked{% endif %}>{% translate "All" %}</label>
+    <label><input type="radio" name="status" value="active" {% if status == "active" %}checked{% endif %}>{% translate "Link active" %}</label>
+    <label><input type="radio" name="status" value="none" {% if status == "none" %}checked{% endif %}>{% translate "Not shared" %}</label>
+    <label><input type="radio" name="status" value="ended" {% if status == "ended" %}checked{% endif %}>{% translate "Link ended" %}</label>
+  </div>
+  <div class="toolbar__sort">
+    <label class="visually-hidden" for="sort">{% translate "Sort" %}</label>
+    <select class="select" id="sort" name="sort">
+      <option value="recent" {% if sort == "recent" %}selected{% endif %}>{% translate "Recently used" %}</option>
+      <option value="newest" {% if sort == "newest" %}selected{% endif %}>{% translate "Newest first" %}</option>
+      <option value="name" {% if sort == "name" %}selected{% endif %}>{% translate "Name A–Z" %}</option>
+    </select>
+  </div>
+  <noscript><button class="btn" type="submit">{% translate "Apply" %}</button></noscript>
+</form>
+{% endif %}
+
+{% include "wen/app/partials/address_results.html" %}
+{% endblock %}
