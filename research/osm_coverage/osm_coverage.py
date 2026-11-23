@@ -17,7 +17,7 @@ AREAS = {
     "Jdeideh": (33.8921, 35.5606),
     "Jounieh": (33.9808, 35.6178),
 }
-RADIUS_M = 1000
+RADIUS_M = 2000
 
 # Kinds of places people use as landmarks
 TAGS = {
@@ -55,6 +55,7 @@ def download_landmarks(area, centre):
         "name_ar": gdf.get("name:ar"),
         "name_en": gdf.get("name:en"),
         "alt_name": gdf.get("alt_name"),
+        "brand": gdf.get("brand"),                      ##############
         "category": gdf.apply(category, axis=1),
         "lat": points.y,
         "lon": points.x,
@@ -65,9 +66,9 @@ def download_landmarks(area, centre):
 def all_names(table):
     """Every name of every landmark, lowercased, for fuzzy matching."""
     names = []
-    for col in ["name", "name_ar", "name_en", "alt_name"]:
+    for col in ["name", "name_ar", "name_en", "alt_name", "brand"]:     ############
         names += table[col].dropna().astype(str).str.lower().tolist()
-    return names
+        return [n for n in names if len(n) >= 3]  # ignore 1-2 letter names
 
 
 def main():
@@ -94,7 +95,7 @@ def main():
     results = []
     for _, row in mentions.iterrows():
         names = all_names(landmarks[landmarks["area"] == row["area"]])
-        best = process.extractOne(str(row["mention"]).lower(), names, scorer=fuzz.WRatio)
+        best = process.extractOne(str(row["mention"]).lower(), names, scorer=fuzz.token_set_ratio)
         found = best is not None and best[1] >= MATCH_THRESHOLD
         results.append({
             "area": row["area"],
