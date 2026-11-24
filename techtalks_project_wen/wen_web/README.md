@@ -3,6 +3,20 @@
 Server-rendered Django templates with HTMX, Alpine.js and Leaflet, as in the project brief.
 No build step and no Node: every library is vendored under `static/wen/vendor/`.
 
+## Libraries and versions
+
+Everything is downloaded into `static/wen/vendor/` (and `static/wen/fonts/`), so the app needs no CDN and no build step.
+To upgrade a library, replace its file and update this table.
+
+| Library | Version | File | Used for |
+| --- | --- | --- | --- |
+| [HTMX](https://htmx.org) | 2.0.4 | `vendor/htmx/htmx.min.js` | Live search, creating and turning off links, driver landmark check (no page reload) |
+| [Alpine.js](https://alpinejs.dev) | 3.14.9 | `vendor/alpine/alpine.esm.min.js` | Interactive components: create flow, photo picker, voice recorder, menus, dialogs |
+| [Alpine Focus plugin](https://alpinejs.dev/plugins/focus) | 3.14.9 | `vendor/alpine/focus.esm.min.js` | Keyboard focus inside dialogs |
+| [Leaflet](https://leafletjs.com) | 1.9.4 | `vendor/leaflet/leaflet.js`, `leaflet.css` | All maps |
+| [Readex Pro](https://fonts.google.com/specimen/Readex+Pro) (via @fontsource-variable 5.3.0) | variable | `fonts/*.woff2` | Arabic and Latin typeface (OFL licence in `fonts/OFL.txt`) |
+| [Lucide icons](https://lucide.dev) | 1.77.0 | `img/icons.svg` | Icon sprite (only the icons the UI uses) |
+
 ## Run it
 
 From the repository root, with `techtalks_project_wen/.env.dev` in place:
