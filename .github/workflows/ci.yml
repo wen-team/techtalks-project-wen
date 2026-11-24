@@ -1,0 +1,78 @@
+
+name: Wen CI Pipeline
+
+on:
+  push:
+    branches: [main, "feature/**"]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Build and Test Django
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    defaults:
+      run:
+        working-directory: techtalks_project_wen
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create test environment
+        run: |
+          cat > .env.dev <<'EOF'
+          DEBUG=1
+          SECRET_KEY=github-ci-test-key
+          DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1 testserver"
+          SQL_ENGINE=django.db.backends.postgresql
+          SQL_DATABASE=hello_django_dev
+          SQL_USER=hello_django
+          SQL_PASSWORD=hello_django
+          SQL_HOST=db
+          SQL_PORT=5432
+          POSTGRES_MAJOR_VERSION=18
+          PGADMIN_EMAIL=ci@example.com
+          PGADMIN_PASSWORD=ci-test-password
+          DEBIAN_VERSION=trixie
+          REDIS_PASSWORD=ci-redis-password
+          EOF
+
+      - name: Build Docker image
+        run: docker compose --env-file .env.dev build web
+
+      - name: Start database and Redis
+        run: docker compose --env-file .env.dev up -d db redis
+
+      - name: Wait for database
+        run: |
+          for i in {1..30}; do
+            if docker compose --env-file .env.dev exec -T db pg_isready -U hello_django -d hello_django_dev; then
+              exit 0
+            fi
+            sleep 2
+          done
+          exit 1
+
+      - name: Django system check
+        run: docker compose --env-file .env.dev run --rm -T web python manage.py check
+
+      - name: Run migrations
+        run: docker compose --env-file .env.dev run --rm -T web python manage.py migrate
+
+      - name: Run automated tests
+        run: docker compose --env-file .env.dev run --rm -T web python manage.py test --verbosity=2
+
+      - name: Show logs on failure
+        if: failure()
+        run: docker compose --env-file .env.dev logs
+
+      - name: Clean up containers
+        if: always()
+        run: docker compose --env-file .env.dev down -v
