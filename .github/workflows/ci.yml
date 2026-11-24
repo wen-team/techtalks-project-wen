@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Create test environment
         run: |
@@ -76,3 +76,4 @@ jobs:
       - name: Clean up containers
         if: always()
         run: docker compose --env-file .env.dev down -v
+
