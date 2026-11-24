@@ -4,3 +4,5 @@ djangorestframework==3.18.3
 psycopg==3.3.9
 psycopg-binary==3.3.9
 sqlparse==0.6.1
+
+coverage

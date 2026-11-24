@@ -66,8 +66,8 @@ jobs:
       - name: Run migrations
         run: docker compose --env-file .env.dev run --rm -T web python manage.py migrate
 
-      - name: Run automated tests
-        run: docker compose --env-file .env.dev run --rm -T web python manage.py test --verbosity=2
+      - name: Run automated tests with coverage
+        run: docker compose --env-file .env.dev run --rm -T web sh -c "coverage run --source=wen_api,wen_users,wen_web manage.py test --verbosity=2 && coverage report -m"
 
       - name: Show logs on failure
         if: failure()
@@ -76,4 +76,6 @@ jobs:
       - name: Clean up containers
         if: always()
         run: docker compose --env-file .env.dev down -v
+
+
 
