@@ -9,6 +9,9 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK 1
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+# install GDAL (GeoDjango needs it to work with map data)
+RUN apt-get update && apt-get install -y --no-install-recommends gdal-bin libgdal-dev && rm -rf /var/lib/apt/lists/*
+
 # install dependencies
 RUN pip install --upgrade pip
 COPY ./requirements.txt .
