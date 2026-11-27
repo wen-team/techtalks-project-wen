@@ -84,7 +84,8 @@ WSGI_APPLICATION = 'wen_project.wsgi.application'
 # Reads the SQL_* values from .env.dev (see .env.example).
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('SQL_ENGINE', 'django.db.backends.postgresql'),
+        #'ENGINE': os.environ.get('SQL_ENGINE', 'django.db.backends.postgresql'),
+         'ENGINE': os.environ.get('SQL_ENGINE', 'django.contrib.gis.db.backends.postgis'),
         'NAME': os.environ.get('SQL_DATABASE'),
         'USER': os.environ.get('SQL_USER'),
         'PASSWORD': os.environ.get('SQL_PASSWORD'),
